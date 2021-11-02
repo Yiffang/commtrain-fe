@@ -1,6 +1,6 @@
-import { Button, Result, Card, Table } from 'antd';
-import React from 'react';
-import { history } from 'umi';
+import { Button, Result, Card, Table, Modal, Form, Input, Row, Divider } from 'antd';
+import React, { Component } from 'react';
+import { history, connect } from 'umi';
 import ProTable from '@ant-design/pro-table';
 
 const columns = [{
@@ -13,18 +13,78 @@ const columns = [{
   key: 'nickName',
 }]
 
-const dataSource = [{
-  loginName: 'tanj_24',
-  nickName: '谈健',
-}, {
-  loginName: 'one',
-  nickName: '旺',
-}]
+const layout = {
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
+};
 
-const UserList = () => (
-  <Card extra={<Button type="primary">新增用户</Button>}>
-    <Table columns={columns} dataSource={dataSource} rowKey="loginName"/>
-  </Card>
-);
+class UserList extends Component {
 
-export default UserList;
+  onChangeField(name, e){
+    const {dispatch} = this.props;
+    dispatch({
+      type:'userModel/changeState',
+      payload: {
+        [name]: e.target.value,
+      }
+    })
+  }
+
+  onClickAddUser=()=>{
+    const {dispatch} = this.props;
+    dispatch({
+      type:'userModel/addUser',
+      payload:{},
+    })
+  }
+
+  onChangePage =(pageNo, pageSize)=>{
+    const {dispatch} = this.props;
+    dispatch({
+      type:'userModel/changeState',
+      payload:{
+        pageNo,
+        pageSize
+      }
+    })
+    dispatch({
+      type: 'userModel/fetch',
+      payload: {
+        pageNo, pageSize
+      }
+    })
+  }
+
+  render() {
+    const { userModel, dispatch } = this.props;
+    const { userList, modalVisible,addLoginName,addNickName, pageSize, pageNo, totalCount } = userModel;
+    return (
+      <div>
+        <Card>
+            <Form name="basic" layout="inline" {...layout}>
+              <Form.Item label="账号" name="loginName" >
+                <Input value={addLoginName} onChange={this.onChangeField.bind(this,'addLoginName')}/>
+              </Form.Item>
+              <Form.Item label="昵称" name="nickName" >
+                <Input value={addNickName} onChange={this.onChangeField.bind(this, 'addNickName')}/>
+              </Form.Item>
+              <Form.Item {...layout}>
+                <Button type="primary" onClick={this.onClickAddUser}>
+                  新增用户
+                </Button>
+              </Form.Item>
+            </Form>
+            <Divider/>
+          <Table columns={columns} dataSource={userList} rowKey="loginName" pagination={{
+            current: pageNo,
+            total: totalCount,
+            pageSize: pageSize,
+            onChange: this.onChangePage
+          }}/>
+        </Card>
+      </div>);
+  }
+}
+export default connect(({ userModel }) => ({
+  userModel,
+}))(UserList);

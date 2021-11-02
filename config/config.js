@@ -14,8 +14,8 @@ export default defineConfig({
   layout: {
     // https://umijs.org/zh-CN/plugins/plugin-layout
     locale: true,
-    siderWidth: 208,
-    // siderWidth: 0, 
+    // siderWidth: 208,
+    siderWidth: 0, 
     ...defaultSettings,
   },
   // https://umijs.org/zh-CN/plugins/plugin-locale
@@ -31,6 +31,9 @@ export default defineConfig({
   },
   targets: {
     ie: 11,
+  },
+  history: {
+    type: 'hash'
   },
   // umi routes: https://umijs.org/docs/routing
   routes,
@@ -69,4 +72,5 @@ export default defineConfig({
   mfsu: {},
   webpack5: {},
   exportStatic: {},
+  
 });

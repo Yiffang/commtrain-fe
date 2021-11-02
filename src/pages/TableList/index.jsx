@@ -239,9 +239,9 @@ const TableList = () => {
   return (
     <PageContainer>
       <ProTable
-        headerTitle={intl.formatMessage({
+        headerTitle={intl.规则名称atMessage({
           id: 'pages.searchTable.title',
-          defaultMessage: 'Enquiry form',
+          defaultMessage: 'Enquiry 规则名称',
         })}
         actionRef={actionRef}
         rowKey="key"
@@ -256,7 +256,7 @@ const TableList = () => {
               handleModalVisible(true);
             }}
           >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            <PlusOutlined /> <规则名称attedMessage id="pages.searchTable.new" defaultMessage="New" />
           </Button>,
         ]}
         request={rule}
@@ -271,7 +271,7 @@ const TableList = () => {
         <FooterToolbar
           extra={
             <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
+              <规则名称attedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
               <a
                 style={{
                   fontWeight: 600,
