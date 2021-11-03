@@ -55,7 +55,7 @@ export default [
   },
   {
     path: '/',
-    redirect: '/welcome',
+    redirect: '/demo',
   },
   {
     component: './404',
