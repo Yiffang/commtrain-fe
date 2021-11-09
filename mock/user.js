@@ -206,5 +206,8 @@ export default {
       path: '/base/category/list',
     });
   },
+  'GET /api/user/list':(req, res) => {
+    res.send({"flag":true,"msg":"批量查询成功","data":{"pageSize":10,"totalCount":2,"pageNum":0,"start":0,"totalPages":1,"records":[{"id":2,"loginName":"hahaha","nickName":"哈哈哈111","password":"hahaha"},{"id":1,"loginName":"tanj_24","nickName":"tanjian","password":"tanj_24"}]}})
+  },
   'GET  /api/login/captcha': getFakeCaptcha,
 };
