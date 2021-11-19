@@ -24,6 +24,10 @@ export default [
     component: './Demo',
   },
   {
+    path: '/test',
+    component: './Test',
+  },
+  {
     path: '/welcome',
     name: 'welcome',
     icon: 'smile',

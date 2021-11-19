@@ -15,32 +15,38 @@ export const initialStateConfig = {
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 
-// export async function getInitialState() {
-//   const fetchUserInfo = async () => {
-//     try {
-//       const msg = await queryCurrentUser();
-//       return msg.data;
-//     } catch (error) {
-//       history.push(loginPath);
-//     }
+export async function getInitialState() {
+  console.log("start")
+  const fetchUserInfo = async () => {
+    try {
+      const msg = await queryCurrentUser();
+      if(!msg.flag) {
+        history.push(loginPath);
+      } else {
+        return msg.data;
+      }
+    } catch (error) {
+      history.push(loginPath);
+    }
 
-//     return undefined;
-//   }; // 如果是登录页面，不执行
+    return undefined;
+  }; // 如果是登录页面，不执行
 
-//   if (history.location.pathname !== loginPath) {
-//     const currentUser = await fetchUserInfo();
-//     return {
-//       fetchUserInfo,
-//       currentUser,
-//       settings: {},
-//     };
-//   }
 
-//   return {
-//     fetchUserInfo,
-//     settings: {},
-//   };
-// } // ProLayout 支持的api https://procomponents.ant.design/components/layout
+  if (history.location.pathname !== loginPath) {
+    const currentUser = await fetchUserInfo();
+    return {
+      fetchUserInfo,
+      currentUser,
+      settings: {},
+    };
+  }
+
+  return {
+    fetchUserInfo,
+    settings: {},
+  };
+} // ProLayout 支持的api https://procomponents.ant.design/components/layout
 
 export const layout = ({ initialState }) => {
   return {
