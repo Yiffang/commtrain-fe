@@ -9,8 +9,8 @@ const columns = [{
   key: 'loginName',
 }, {
   title: '昵称',
-  dataIndex: 'nickName',
-  key: 'nickName',
+  dataIndex: 'realName',
+  key: 'realName',
 }]
 
 const layout = {
