@@ -19,6 +19,11 @@ export default [
     ],
   },
   {
+    path: '/cyf',
+    // layout: false,
+    component: './cyf',
+  },
+  {
     path: '/demo',
     // layout: false,
     component: './Demo',
