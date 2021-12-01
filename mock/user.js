@@ -210,4 +210,10 @@ export default {
     res.send({"flag":true,"msg":"批量查询成功","data":{"pageSize":10,"totalCount":2,"pageNum":0,"start":0,"totalPages":1,"records":[{"id":2,"loginName":"hahaha","nickName":"哈哈哈111","password":"hahaha"},{"id":1,"loginName":"tanj_24","nickName":"tanjian","password":"tanj_24"}]}})
   },
   'GET  /api/login/captcha': getFakeCaptcha,
+  'POST /login/api': (req, res) => {
+    res.send({"flag":true,"msg":"登录成功","data":null})
+  },
+  'GET /login/current': (req, res) => {
+    res.send({"flag":true,"msg":"查询成功","data":{"loginName":"tanj_24","realName":"谈健","admin":true}})
+  },
 };
