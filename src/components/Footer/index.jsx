@@ -1,36 +1,22 @@
 import { useIntl } from 'umi';
 import { GithubOutlined } from '@ant-design/icons';
 import { DefaultFooter } from '@ant-design/pro-layout';
+import styles from './index.less';
+
+
 export default () => {
   const intl = useIntl();
   const defaultMessage = intl.formatMessage({
     id: 'app.copyright.produced',
-    defaultMessage: '技术部出品',
+    defaultMessage: '交通银行金融科技部出品',
   });
   const currentYear = new Date().getFullYear();
+  const copyright = 'Copyright©';
+  const block = ' ';
   return (
-    <DefaultFooter
-      copyright={`${currentYear} ${defaultMessage}`}
-      links={[
-        // {
-        //   key: 'Ant Design Pro',
-        //   title: 'Ant Design Pro',
-        //   href: 'https://pro.ant.design',
-        //   blankTarget: true,
-        // },
-        // {
-        //   key: 'github',
-        //   title: <GithubOutlined />,
-        //   href: 'https://github.com/ant-design/ant-design-pro',
-        //   blankTarget: true,
-        // },
-        // {
-        //   key: 'Ant Design',
-        //   title: 'Ant Design',
-        //   href: 'https://ant.design',
-        //   blankTarget: true,
-        // },
-      ]}
-    />
+    <footer class={styles.miniFooter}>
+      <div><br/>{copyright}{currentYear}{defaultMessage}</div>
+      <div><br/></div>
+    </footer>
   );
 };
