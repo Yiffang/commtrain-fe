@@ -1,10 +1,10 @@
-import { PageHeader,Tabs,Table,Button } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { PageHeader,Tabs,Table,Button,Pagination } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
 
 //这是表格数据
 const data = [
     {
-      key: 'groupName',
+      key: '1',
       groupName: 'John Brown',
       info: 'nothing',
       groupAdmin: 'luke',
@@ -26,6 +26,102 @@ const data = [
         groupAdmin: 'luke',
         groupSize: 44,
         createTime:'20210101',
+    },
+    {
+      key: '4',
+      groupName: 'John Brown',
+      info: 'nothing',
+      groupAdmin: 'luke',
+      groupSize: 44,
+      createTime:'20210101',
+    },
+    {
+      key: '5',
+      groupName: 'John Brown',
+      info: 'nothing',
+      groupAdmin: 'luke',
+      groupSize: 44,
+      createTime:'20210101',
+    },
+    {
+      key: '6',
+      groupName: 'John Brown',
+      info: 'nothing',
+      groupAdmin: 'luke',
+      groupSize: 44,
+      createTime:'20210101',
+    },
+    {
+      key: '7',
+      groupName: 'John Brown',
+      info: 'nothing',
+      groupAdmin: 'luke',
+      groupSize: 44,
+      createTime:'20210101',
+    },
+    {
+      key: '8',
+      groupName: 'John Brown',
+      info: 'nothing',
+      groupAdmin: 'luke',
+      groupSize: 44,
+      createTime:'20210101',
+    },
+    {
+      key: '9',
+      groupName: 'John Brown',
+      info: 'nothing',
+      groupAdmin: 'luke',
+      groupSize: 44,
+      createTime:'20210101',
+    },
+    {
+      key: '10',
+      groupName: 'John Brown',
+      info: 'nothing',
+      groupAdmin: 'luke',
+      groupSize: 44,
+      createTime:'20210101',
+    },
+    {
+      key: '11',
+      groupName: 'John Brown',
+      info: 'nothing',
+      groupAdmin: 'luke',
+      groupSize: 44,
+      createTime:'20210101',
+    },
+    {
+      key: '12',
+      groupName: 'John Brown',
+      info: 'nothing',
+      groupAdmin: 'luke',
+      groupSize: 44,
+      createTime:'20210101',
+    },
+    {
+      key: '13',
+      groupName: 'John Brown',
+      info: 'nothing',
+      groupAdmin: 'luke',
+      groupSize: 44,
+      createTime:'20210101',
+    },
+    {
+      key: '14',
+      groupName: 'John Brown',
+      info: 'nothing',
+      groupAdmin: 'luke',
+      groupSize: 44,
+      createTime:'20210101',
+    },
+    {
+      key: '15',
+      groupName: 'John Brown',
+      info: 'nothing',
+      groupAdmin: 'luke',
+      groupSize: 44,
+      createTime:'20210101',
     },
   ];
 //这是表格的样式
@@ -60,7 +156,7 @@ const columns = [
         title: '操作',
         key: 'action',
         dataIndex: 'action',
-        render: ()=><Button icon={<SearchOutlined />} />,
+        render: ()=><Button icon={<EditOutlined />} />,
       },
   ];
 //这是tab的样式，这个callback函数还不知道啥意思
