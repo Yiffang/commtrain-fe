@@ -64,7 +64,7 @@ export default [
   },
   {
     path: '/',
-    redirect: '/demo',
+    redirect: '/cyf',
   },
   {
     component: './404',

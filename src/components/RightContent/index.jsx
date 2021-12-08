@@ -1,10 +1,13 @@
 import { Space } from 'antd';
+import { Alert } from 'antd';
+import { ReactDOM } from 'react-dom';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import React from 'react';
 import { useModel, SelectLang } from 'umi';
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
+import { render } from 'enzyme';
 
 const GlobalHeaderRight = () => {
   const { initialState } = useModel('@@initialState');
@@ -24,8 +27,8 @@ const GlobalHeaderRight = () => {
     <Space className={className}>
       <HeaderSearch
         className={`${styles.action} ${styles.search}`}
-        placeholder="站内搜索"
-        defaultValue="umi ui"
+        placeholder="文档搜索"
+        defaultValue="交享乐"
         options={[
           {
             label: <a href="https://umijs.org/zh/guide/umi-ui.html">umi ui</a>,
@@ -43,22 +46,43 @@ const GlobalHeaderRight = () => {
             label: <a href="https://prolayout.ant.design/">Pro Layout</a>,
             value: 'Pro Layout',
           },
+          {
+            label: <a href="/">交享乐</a>,
+            value: '交享乐',
+          },
         ]} // onSearch={value => {
         //   console.log('input', value);
         // }}
       />
       <span
         className={styles.action}
+        onClick={() =>{
+          window.location.replace('/fakeurlgroup');
+        }}>
+        <img src='/icons/icon-128*128.png'/>
+        <div><font color='#ffffff'>{'群组'}{233}</font></div>
+      </span>
+      <span
+        className={styles.action}
+        onClick={() =>{
+          window.location.replace('/fakeurluser');
+        }}>
+        <img src='/icons/icon-128*128.png'/>
+        <div><font color='#ffffff'>{'用户'}</font></div>
+      </span>
+      <span
+        className={styles.action}
         onClick={() => {
-          window.open('https://pro.ant.design/docs/getting-started');
-        }}
-      >
+          window.alert("请联系管理员XXX老师\n邮箱为XXX");
+        }}>
         <QuestionCircleOutlined />
       </span>
-      <Avatar />
-      <SelectLang className={styles.action} />
+
     </Space>
   );
 };
 
 export default GlobalHeaderRight;
+
+//<Avatar />
+//<SelectLang className={styles.action} />

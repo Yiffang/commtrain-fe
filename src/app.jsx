@@ -20,6 +20,7 @@ export async function getInitialState() {
   const fetchUserInfo = async () => {
     try {
       const msg = await queryCurrentUser();
+      msg.flag = true;
       if(!msg.flag) {
         history.push(loginPath);
       } else {
