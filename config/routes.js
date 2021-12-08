@@ -24,6 +24,11 @@ export default [
     component: './Demo',
   },
   {
+    path: '/group',
+    // layout: false,
+    component: './Group',
+  },
+  {
     path: '/test',
     component: './Test',
   },
