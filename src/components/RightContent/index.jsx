@@ -8,9 +8,27 @@ import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
 import { render } from 'enzyme';
+import { currentUser as queryCurrentUser } from '../../services/ant-design-pro/api';
 
 const GlobalHeaderRight = () => {
   const { initialState } = useModel('@@initialState');
+
+  //获取用户信息
+  var username = "default";
+  var groupnum = 0;
+  var usericon = "";
+  const getUserData = async () => {
+    console.log('get user data');
+    let res = await queryCurrentUser();
+    console.log(res.data);
+    username = res.data['name'];
+    console.log(username);
+    //return res.data;
+  }
+  var msg = getUserData();
+  //username = msg['name'];
+  //groupnum = msg['group_num'];
+  //usericon = msg['user_pic_path'];
 
   if (!initialState || !initialState.settings) {
     return null;
@@ -22,6 +40,8 @@ const GlobalHeaderRight = () => {
   if ((navTheme === 'dark' && layout === 'top') || layout === 'mix') {
     className = `${styles.right}  ${styles.dark}`;
   }
+
+
 
   return (
     <Space className={className}>
@@ -60,15 +80,15 @@ const GlobalHeaderRight = () => {
           window.location.replace('/fakeurlgroup');
         }}>
         <img src='/icons/icon-128*128.png'/>
-        <div><font color='#ffffff'>{'群组'}{233}</font></div>
+        <div><font color='#ffffff'>{'群组'}{groupnum}</font></div>
       </span>
       <span
         className={styles.action}
         onClick={() =>{
           window.location.replace('/fakeurluser');
         }}>
-        <img src='/icons/icon-128*128.png'/>
-        <div><font color='#ffffff'>{'用户'}</font></div>
+        <img src={usericon}/>
+        <div><font color='#ffffff'>{username}</font></div>
       </span>
       <span
         className={styles.action}

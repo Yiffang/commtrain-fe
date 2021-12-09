@@ -210,4 +210,7 @@ export default {
     res.send({"flag":true,"msg":"批量查询成功","data":{"pageSize":10,"totalCount":2,"pageNum":0,"start":0,"totalPages":1,"records":[{"id":2,"loginName":"hahaha","nickName":"哈哈哈111","password":"hahaha"},{"id":1,"loginName":"tanj_24","nickName":"tanjian","password":"tanj_24"}]}})
   },
   'GET  /api/login/captcha': getFakeCaptcha,
+  'GET /login/current':(req, res) => {
+    res.send({"flag":true,"msg":"mock user","data":{"id":1,"name":"TEST USER","group_num":233,"user_pic_path":'images/icon_bocom.jpg'}})
+  },
 };
