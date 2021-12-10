@@ -211,6 +211,6 @@ export default {
   },
   'GET  /api/login/captcha': getFakeCaptcha,
   'GET /login/current':(req, res) => {
-    res.send({"flag":true,"msg":"mock user","data":{"id":1,"name":"TEST USER","group_num":233,"user_pic_path":'images/icon_bocom.jpg'}})
+    res.send({"flag":true,"msg":"mock user","data":{"id":1,"name":"TEST USER","group_num":233,"user_pic_path":'icons/icon-64x64.png'}})
   },
 };

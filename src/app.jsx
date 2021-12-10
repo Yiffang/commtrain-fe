@@ -51,11 +51,11 @@ export async function getInitialState() {
 
 export const layout = ({ initialState }) => {
   return {
-    rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     waterMarkProps: {
       content: initialState?.currentUser?.name,
     },
+    rightContentRender: () => <RightContent />,
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history; // 如果没有登录，重定向到 login

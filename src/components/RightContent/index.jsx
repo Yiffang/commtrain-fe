@@ -9,26 +9,19 @@ import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
 import { render } from 'enzyme';
 import { currentUser as queryCurrentUser } from '../../services/ant-design-pro/api';
+import { INHERIT_KEYS } from '@babel/types';
 
 const GlobalHeaderRight = () => {
   const { initialState } = useModel('@@initialState');
-
+  //console.log(initialState);
+  //console.log(initialState.currentUser);
   //获取用户信息
   var username = "default";
   var groupnum = 0;
   var usericon = "";
-  const getUserData = async () => {
-    console.log('get user data');
-    let res = await queryCurrentUser();
-    console.log(res.data);
-    username = res.data['name'];
-    console.log(username);
-    //return res.data;
-  }
-  var msg = getUserData();
-  //username = msg['name'];
-  //groupnum = msg['group_num'];
-  //usericon = msg['user_pic_path'];
+  username = initialState.currentUser['name'];
+  groupnum = initialState.currentUser['group_num'];
+  usericon = initialState.currentUser['user_pic_path'];
 
   if (!initialState || !initialState.settings) {
     return null;
@@ -79,7 +72,7 @@ const GlobalHeaderRight = () => {
         onClick={() =>{
           window.location.replace('/fakeurlgroup');
         }}>
-        <img src='/icons/icon-128*128.png'/>
+        <img src='/icons/icon-64x64.png'/>
         <div><font color='#ffffff'>{'群组'}{groupnum}</font></div>
       </span>
       <span
