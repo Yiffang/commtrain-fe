@@ -1,129 +1,8 @@
-import { PageHeader,Tabs,Table,Button,Pagination } from 'antd';
+import { PageHeader,Tabs,Table,Button } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
+import { connect } from 'umi';
 
 //这是表格数据
-const data = [
-    {
-      key: '1',
-      groupName: 'John Brown',
-      info: 'nothing',
-      groupAdmin: 'luke',
-      groupSize: 44,
-      createTime:'20210101',
-    },
-    {
-        key: '2',
-        groupName: 'John Brown',
-        info: 'nothing',
-        groupAdmin: 'luke',
-        groupSize: 44,
-        createTime:'20210101',
-    },
-    {
-        key: '3',
-        groupName: 'John Brown',
-        info: 'nothing',
-        groupAdmin: 'luke',
-        groupSize: 44,
-        createTime:'20210101',
-    },
-    {
-      key: '4',
-      groupName: 'John Brown',
-      info: 'nothing',
-      groupAdmin: 'luke',
-      groupSize: 44,
-      createTime:'20210101',
-    },
-    {
-      key: '5',
-      groupName: 'John Brown',
-      info: 'nothing',
-      groupAdmin: 'luke',
-      groupSize: 44,
-      createTime:'20210101',
-    },
-    {
-      key: '6',
-      groupName: 'John Brown',
-      info: 'nothing',
-      groupAdmin: 'luke',
-      groupSize: 44,
-      createTime:'20210101',
-    },
-    {
-      key: '7',
-      groupName: 'John Brown',
-      info: 'nothing',
-      groupAdmin: 'luke',
-      groupSize: 44,
-      createTime:'20210101',
-    },
-    {
-      key: '8',
-      groupName: 'John Brown',
-      info: 'nothing',
-      groupAdmin: 'luke',
-      groupSize: 44,
-      createTime:'20210101',
-    },
-    {
-      key: '9',
-      groupName: 'John Brown',
-      info: 'nothing',
-      groupAdmin: 'luke',
-      groupSize: 44,
-      createTime:'20210101',
-    },
-    {
-      key: '10',
-      groupName: 'John Brown',
-      info: 'nothing',
-      groupAdmin: 'luke',
-      groupSize: 44,
-      createTime:'20210101',
-    },
-    {
-      key: '11',
-      groupName: 'John Brown',
-      info: 'nothing',
-      groupAdmin: 'luke',
-      groupSize: 44,
-      createTime:'20210101',
-    },
-    {
-      key: '12',
-      groupName: 'John Brown',
-      info: 'nothing',
-      groupAdmin: 'luke',
-      groupSize: 44,
-      createTime:'20210101',
-    },
-    {
-      key: '13',
-      groupName: 'John Brown',
-      info: 'nothing',
-      groupAdmin: 'luke',
-      groupSize: 44,
-      createTime:'20210101',
-    },
-    {
-      key: '14',
-      groupName: 'John Brown',
-      info: 'nothing',
-      groupAdmin: 'luke',
-      groupSize: 44,
-      createTime:'20210101',
-    },
-    {
-      key: '15',
-      groupName: 'John Brown',
-      info: 'nothing',
-      groupAdmin: 'luke',
-      groupSize: 44,
-      createTime:'20210101',
-    },
-  ];
 //这是表格的样式
 const columns = [
     {
@@ -159,24 +38,33 @@ const columns = [
         render: ()=><Button icon={<EditOutlined />} />,
       },
   ];
+
 //这是tab的样式，这个callback函数还不知道啥意思
 function callback(key) {
     console.log(key);
   }
-export default () => {
+const GroupList=(props) => {
+  console.log(props);
+  const { groupModel, dispatch } = props;
+  const { grouplist } = groupModel;
+  console.log(grouplist);
     const { TabPane } = Tabs;
-    return <div>
-        <PageHeader
-    className="site-page-header"
-    title="群组"
-        />
-        <Tabs defaultActiveKey="1" onChange={callback}>
+      return (
+        <div>
+          <PageHeader className="site-page-header" title="群组" />
+          <Tabs defaultActiveKey="1" onChange={callback}>
             <TabPane tab="已加入群组" key="1">
-                <Table columns={columns} dataSource={data} />
+              <Table columns={columns} dataSource={grouplist} />
             </TabPane>
             <TabPane tab="所有群组" key="2">
-                <Table columns={columns} dataSource={data} />
+              <Table columns={columns} dataSource={grouplist} />
             </TabPane>
-        </Tabs>
-        </div>;
-  };
+          </Tabs>
+        </div>
+      );
+    };
+
+    export default connect(({ groupModel }) => ({
+      groupModel,
+    }))(GroupList);
+
