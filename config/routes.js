@@ -33,6 +33,10 @@ export default [
     component: './Test',
   },
   {
+    path: '/groupmember',
+    component: './Groupmember',
+  },
+  {
     path: '/welcome',
     name: 'welcome',
     icon: 'smile',

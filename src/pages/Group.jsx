@@ -1,15 +1,26 @@
-import { PageHeader,Tabs,Table,Button } from 'antd';
+import { PageHeader,Tabs,Table,Button,Popover } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { connect } from 'umi';
 
-//这是表格数据
+//这是浮窗内容
+const content = (
+  <div>
+    <p>对不起，您没有该群组权限，如想加入，</p>
+    <p>请联系该群组管理员</p>
+  </div>
+);
 //这是表格的样式
 const columns = [
     {
       title: '名称',
       dataIndex: 'groupName',
       key: 'groupName',
-      
+      render: text => (
+        <Popover content={content} placement="topLeft" arrowPointAtCenter >
+        <a href="#/groupmember">{text}</a>
+        </Popover>
+      )
+      ,
     },
     {
       title: '简介',
