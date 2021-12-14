@@ -20,6 +20,11 @@ const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION } = process.env;
 
 let access = ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION === 'site' ? 'admin' : '';
 
+//缓存code为"1"的project_folder
+let project_folders = []
+project_folders.push({"folder_id":1,"folder_name":"文件夹1"})
+project_folders.push({"folder_id":2,"folder_name":"文件夹2"})
+
 const getAccess = () => {
   return access;
 }; // 代码中会兼容本地 service mock 以及部署站点的静态数据
@@ -213,4 +218,36 @@ export default {
   'GET /login/current':(req, res) => {
     res.send({"flag":true,"msg":"mock user","data":{"id":1,"name":"TEST USER","group_num":233,"user_pic_path":'icons/icon-64x64.png'}})
   },
+  'POST /api/folder/add':async(req, res) => {
+    await waitTime(1000);
+    const {folder_name} = req.query;
+    let folder_count = project_folders.length;
+    project_folders.push({"folder_id":folder_count+1,"folder_name":folder_name});
+    res.send({"flag":true,"msg":"创建文件夹成功","data":{}})
+  },
+  'POST /api/folder/delete':async(req, res) => {
+    await waitTime(1000);
+    const {folder_id} = req.query;
+    let folder_count = project_folders.length;
+    for (let i=0; i<folder_count; i++){
+      if (project_folders[i].folder_id.toString()==folder_id.toString()){
+        project_folders.splice(i,1);
+        break;
+      }
+    }
+    for (let i=0; i<folder_count-1; i++){
+      project_folders[i].folder_id = i+1;
+    }
+    //project_folders.splice(0,1);
+    res.send({"flag":true,"msg":"删除文件夹成功","data":{}})
+  },
+  'GET /api/folder/list':async(req, res) => {
+    await waitTime(1000);
+    const {project_code} = req.query;
+    if (project_code=='1'){
+      //res.send({"flag":true,"msg":"查询文件夹列表成功","data":{"project_folders":[{"folder_id":1,"folder_name":"文件夹1"},{"folder_id":2,"folder_name":"文件夹2"},{"folder_id":3,"folder_name":"文件夹3"}]}})
+      res.send({"flag":true,"msg":"查询文件夹列表成功","data":{"project_folders":project_folders}})
+    }
+    //res.send({"flag":true,"msg":"查询文件夹列表成功","data":{"project_folders":[{"folder_id":1,"folder_name":"文件夹1"},{"folder_id":2,"folder_name":"文件夹2"},{"folder_id":3,"folder_name":"文件夹3"}]}})
+  }
 };
