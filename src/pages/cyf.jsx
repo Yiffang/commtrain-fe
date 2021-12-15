@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import ProCard from '@ant-design/pro-card';
-import { Avatar, Button, Tree, List, Result, Card, Table, Modal, Form, Input, Row, Divider ,Popconfirm, Layout} from 'antd';
+import { Alert, Avatar, Button, Tree, List, Result, Card, Table, Modal, Form, Input, Row, Divider ,Popconfirm, Layout} from 'antd';
 import { history, connect } from 'umi';
 import PropTypes from 'prop-types';
 
@@ -135,6 +135,16 @@ class DocPage extends Component {
       }
     })
   }
+  //关闭警告弹窗
+  AlertVisibleCancel = () => {
+    const{dispatch} = this.props;
+    dispatch({
+      type:'docModel/AlertVisibleCancel',
+      payload:{
+
+      }
+    })
+  }
   //删除文件夹
   ondeleteFolder = (id) => {
     const {dispatch} = this.props;
@@ -150,11 +160,11 @@ class DocPage extends Component {
   }
   render(){
     const {docModel,dispatch} = this.props;
-    const {listcontent,createFolderVisible,editFolderVisible,editfoldername,editfolderid,addfoldername,project_name,folderlist} = docModel;
-    var treeData = [];
+    const {listcontent,AlertVisible,alertmessage,createFolderVisible,editFolderVisible,editfoldername,editfolderid,addfoldername,project_name,folderlist} = docModel;
+    /*var treeData = [];
     for (var i=0;i<folderlist.length;i++){
       treeData.push({title:folderlist[i].folder_name,key:'0-'+folderlist[i].folder_id,children:[]});
-    };
+    };*/
     return (
       <Layout>
         <Sider style={{ height: '100%', background: 'white' ,minHeight: document.documentElement.clientHeight - 140}}>
@@ -194,6 +204,25 @@ class DocPage extends Component {
           >
             <p>编辑文件夹</p>
             <Input value={editfoldername} addonBefore="文件夹名称*" addonAfter="" onChange={this.onChangeField.bind(this,'editfoldername')}/>
+          </Modal>
+          <Modal
+            visible={AlertVisible}
+            title="警告"
+            onOk={this.AlertVisibleCancel}
+            onCancel={this.AlertVisibleCancel}
+            footer={[
+              <Button key="submit" type="primary" onClick={this.AlertVisibleCancel}>
+                确定
+              </Button>,
+            ]}
+          >
+            <Alert
+              message="Warning"
+              description={alertmessage}
+              type="warning"
+              showIcon
+              closable
+            />
           </Modal>
           <List
             itemLayout="horizontal"

@@ -228,6 +228,11 @@ export default {
   'POST /api/folder/update':async(req, res) => {
     await waitTime(1000);
     const {folder_name,folder_id} = req.query;
+    const max_namelength = 5;
+    if (folder_name.length>max_namelength){
+      res.send({"flag":false,"msg":"文件名过长","data":{}})
+      return;
+    }
     let folder_count = project_folders.length;
     for (let i=0; i<folder_count; i++){
       if (project_folders[i].folder_id.toString()==folder_id.toString()){

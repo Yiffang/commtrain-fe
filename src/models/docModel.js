@@ -8,6 +8,8 @@ export default {
     state: {listcontent:[{ name: 'dva', id: 1 },{ name: 'antd', id: 2 }],
         createFolderVisible:false,
         editFolderVisible:false,
+        AlertVisible:false,
+        aleartmessage:"默认警告信息",
         project_code: "1",
         project_name:'我的项目',
         addfoldername:'文件夹名称(必填)',
@@ -120,7 +122,13 @@ export default {
                 })
                 message.success(msg);
             }   else {
-                message.error(msg);
+                yield put({type:'changeState',payload:{alertmessage:msg}});
+                yield put({
+                    type: 'AlertVisibleOk',
+                    payload:{
+
+                    }
+                });
             }
         },
         //编辑文件夹及其弹窗控制
@@ -138,7 +146,6 @@ export default {
                 folder_name: editfoldername,
                 folder_id: editfolderid,
             });
-            console.log(editfoldername+editfolderid);
             yield put({type:'changeState',payload:{editFolderVisible:false}});
             if(flag) {
                 yield put({
@@ -149,8 +156,21 @@ export default {
                 })
                 message.success(msg);
             }   else {
-                message.error(msg);
+                yield put({type:'changeState',payload:{alertmessage:msg}});
+                yield put({
+                    type: 'AlertVisibleOk',
+                    payload:{
+
+                    }
+                });
             }
+        },
+        //警告信息弹窗控制
+        *AlertVisibleOk({},{put}){
+            yield put({type:'changeState',payload:{AlertVisible:true}});
+        },
+        *AlertVisibleCancel({},{put}){
+            yield put({type:'changeState',payload:{AlertVisible:false}});
         },
         //删除文件夹
         *deleteFolder({payload},{call,put,select}){
@@ -169,7 +189,13 @@ export default {
                 })
                 message.success(msg);
             }   else {
-                message.error(msg);
+                yield put({type:'changeState',payload:{alertmessage:msg}});
+                yield put({
+                    type: 'AlertVisibleOk',
+                    payload:{
+
+                    }
+                });
             }
         },
         //文档相关
