@@ -7,9 +7,12 @@ export default {
     namespace: 'docModel',
     state: {listcontent:[{ name: 'dva', id: 1 },{ name: 'antd', id: 2 }],
         createFolderVisible:false,
+        editFolderVisible:false,
         project_code: "1",
         project_name:'我的项目',
         addfoldername:'文件夹名称(必填)',
+        editfoldername:'',
+        editfolderid: -1,
         folderlist: [{folder_id:1,folder_name:'文件夹1'},{folder_id:2,folder_name:"文件夹2"}],
         pageSize: 10,
         pageNo: 1,
@@ -107,8 +110,36 @@ export default {
                 project_code: project_code,
                 folder_name: addfoldername,
             });
-            console.log(addfoldername);
             yield put({type:'changeState',payload:{createFolderVisible:false}});
+            if(flag) {
+                yield put({
+                    type: 'reloadFolder',
+                    payload: {
+                        
+                    }
+                })
+                message.success(msg);
+            }   else {
+                message.error(msg);
+            }
+        },
+        //编辑文件夹及其弹窗控制
+        *onClickEditFolder({payload},{put}){
+            const {id,name} = payload;
+            yield put({type:'changeState',payload:{editfoldername:name,editfolderid:id,editFolderVisible:true}});
+        },
+        *editFolderVisibleCancel({},{put}){
+            yield put({type:'changeState',payload:{editFolderVisible:false}});
+        },
+        *editFolderVisibleOk({},{put,select,call}){
+            const {editfoldername,editfolderid,project_code} = yield select(state=>state.docModel);
+            const {flag, msg} = yield call(folderService.editFolder,{
+                project_code: project_code,
+                folder_name: editfoldername,
+                folder_id: editfolderid,
+            });
+            console.log(editfoldername+editfolderid);
+            yield put({type:'changeState',payload:{editFolderVisible:false}});
             if(flag) {
                 yield put({
                     type: 'reloadFolder',

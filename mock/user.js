@@ -225,6 +225,18 @@ export default {
     project_folders.push({"folder_id":folder_count+1,"folder_name":folder_name});
     res.send({"flag":true,"msg":"创建文件夹成功","data":{}})
   },
+  'POST /api/folder/update':async(req, res) => {
+    await waitTime(1000);
+    const {folder_name,folder_id} = req.query;
+    let folder_count = project_folders.length;
+    for (let i=0; i<folder_count; i++){
+      if (project_folders[i].folder_id.toString()==folder_id.toString()){
+        project_folders[i].folder_name = folder_name;
+        break;
+      }
+    }
+    res.send({"flag":true,"msg":"重命名文件夹成功","data":{}})
+  },
   'POST /api/folder/delete':async(req, res) => {
     await waitTime(1000);
     const {folder_id} = req.query;
@@ -238,7 +250,6 @@ export default {
     for (let i=0; i<folder_count-1; i++){
       project_folders[i].folder_id = i+1;
     }
-    //project_folders.splice(0,1);
     res.send({"flag":true,"msg":"删除文件夹成功","data":{}})
   },
   'GET /api/folder/list':async(req, res) => {

@@ -104,6 +104,37 @@ class DocPage extends Component {
       }
     })
   }
+  //点击编辑文件夹，设置弹窗可见
+  onClickEditFolder = (id,name) => {
+    const{dispatch} = this.props;
+    dispatch({
+      type:'docModel/onClickEditFolder',
+      payload:{
+        id,
+        name,
+      }
+    })
+  }
+  //确认编辑新文件夹
+  editFolderVisibleOk = () => {
+    const{dispatch} = this.props;
+    dispatch({
+      type:'docModel/editFolderVisibleOk',
+      payload:{
+        
+      }
+    })
+  }
+  //关闭编辑文件夹弹窗
+  editFolderVisibleCancel = () => {
+    const{dispatch} = this.props;
+    dispatch({
+      type:'docModel/editFolderVisibleCancel',
+      payload:{
+
+      }
+    })
+  }
   //删除文件夹
   ondeleteFolder = (id) => {
     const {dispatch} = this.props;
@@ -113,17 +144,13 @@ class DocPage extends Component {
         id,
       }
     })
-    console.log('delete ' + id);
   }
-  oneditFolder = (id,e) => {
-    console.log('edit ' + id);
-  }
-  onclickFolder = (id,e) => {
+  onClickOpenFolder = (id,e) => {
     console.log('click ' + id);
   }
   render(){
     const {docModel,dispatch} = this.props;
-    const {listcontent,createFolderVisible,addfoldername,project_name,folderlist} = docModel;
+    const {listcontent,createFolderVisible,editFolderVisible,editfoldername,editfolderid,addfoldername,project_name,folderlist} = docModel;
     var treeData = [];
     for (var i=0;i<folderlist.length;i++){
       treeData.push({title:folderlist[i].folder_name,key:'0-'+folderlist[i].folder_id,children:[]});
@@ -151,6 +178,23 @@ class DocPage extends Component {
             <p>新建文件夹</p>
             <Input value={addfoldername} addonBefore="文件夹名称*" addonAfter="" onChange={this.onChangeField.bind(this,'addfoldername')}/>
           </Modal>
+          <Modal
+            visible={editFolderVisible}
+            title="编辑文件夹"
+            onOk={this.editFolderVisibleOk}
+            onCancel={this.editFolderVisibleCancel}
+            footer={[
+              <Button key="submit" type="primary" onClick={this.editFolderVisibleOk}>
+                确定
+              </Button>,
+              <Button key="back" onClick={this.editFolderVisibleCancel}>
+                取消
+              </Button>,
+            ]}
+          >
+            <p>编辑文件夹</p>
+            <Input value={editfoldername} addonBefore="文件夹名称*" addonAfter="" onChange={this.onChangeField.bind(this,'editfoldername')}/>
+          </Modal>
           <List
             itemLayout="horizontal"
             dataSource={folderlist}
@@ -159,12 +203,12 @@ class DocPage extends Component {
               <List.Item>
                 <List.Item.Meta
                   title={item.folder_name}
-                  onClick={this.onclickFolder.bind(this,item.folder_id)}
+                  onClick={this.onClickOpenFolder.bind(this,item.folder_id)}
                 />
                 <Popconfirm title="确认删除此文件夹?" onConfirm={this.ondeleteFolder.bind(this,item.folder_id)}>
                   <Button>删除</Button>
                 </Popconfirm>
-                <Button onClick={this.oneditFolder.bind(this,item.folder_id)}>编辑</Button>
+                <Button onClick={this.onClickEditFolder.bind(this,item.folder_id,item.folder_name)}>编辑</Button>
               </List.Item>
             )}
           />,

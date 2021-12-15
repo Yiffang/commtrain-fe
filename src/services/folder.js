@@ -25,6 +25,15 @@ export async function deleteFolder(params, options){
           ...params,
         },
     })
-}
+  }
+
+export async function editFolder(params, options) {
+    return request(`/api/folder/update`, {
+      method: 'POST',
+      params: {
+        ...params,
+      },
+    })
+  }
 
   
