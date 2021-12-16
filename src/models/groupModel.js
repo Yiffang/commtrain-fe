@@ -34,8 +34,12 @@ export default {
 
     effects: {
         *fetch({payload}, { call, put }) {
-            const {pageNo, pageSize} = payload;
-            const { flag, data } = yield call(grouplistService.listGroup);
+            // const {searchType} = yield select(state=>state.groupModel);
+            const {searchType}=payload;
+            console.log(searchType);
+            const { flag, data } = yield call(grouplistService.listGroup,{
+                searchType:searchType
+            });
             const { grouplist } = data;
             console.log(grouplist);
             if(flag) {

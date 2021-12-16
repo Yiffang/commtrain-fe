@@ -217,42 +217,84 @@ export default {
     res.send({"flag":true,"msg":"查询成功","data":{"loginName":"tanj_24","realName":"谈健","admin":true}})
   },
   'GET /api/group/list':(req, res) => {
-    res.send({
-      "flag": true,
-      "msg": "批量查询成功",
-      "data": {
-        "pageSize": 10,
-        "totalCount": 2,
-        "pageNum": 0,
-        "start": 0,
-        "totalPages": 1,
-        "grouplist": [
-          {
-            key: '1',
-            groupName: 'John Brown',
-            info: 'nothing',
-            groupAdmin: 'luke',
-            groupSize: 44,
-            createTime:'20210101',
-          },
-          {
-              key: '2',
+    const {searchType} = req.query;
+    if(searchType==0){
+      res.send({
+        "flag": true,
+        "msg": "批量查询成功",
+        "data": {
+          "pageSize": 10,
+          "totalCount": 2,
+          "pageNum": 0,
+          "start": 0,
+          "totalPages": 1,
+          "grouplist": [
+            {
+              key: '1',
               groupName: 'John Brown',
               info: 'nothing',
               groupAdmin: 'luke',
               groupSize: 44,
               createTime:'20210101',
-          },
-          {
-              key: '3',
+              isInGroup:1,
+            },
+            {
+                key: '2',
+                groupName: 'John Brown',
+                info: 'nothing',
+                groupAdmin: 'luke',
+                groupSize: 44,
+                createTime:'20210101',
+                isInGroup:1,
+            },
+            {
+                key: '3',
+                groupName: 'John Brown',
+                info: 'nothing',
+                groupAdmin: 'luke',
+                groupSize: 44,
+                createTime:'20210101',
+                isInGroup:0,
+            },
+          ]
+        },
+      }
+      )
+    }
+    else{
+      res.send({
+        "flag": true,
+        "msg": "批量查询成功",
+        "data": {
+          "pageSize": 10,
+          "totalCount": 2,
+          "pageNum": 0,
+          "start": 0,
+          "totalPages": 1,
+          "grouplist": [
+            {
+              key: '1',
               groupName: 'John Brown',
               info: 'nothing',
               groupAdmin: 'luke',
               groupSize: 44,
               createTime:'20210101',
-          },
-        ]
-      },
-    })
+              isInGroup:1,
+            },
+            {
+                key: '2',
+                groupName: 'John Brown',
+                info: 'nothing',
+                groupAdmin: 'luke',
+                groupSize: 44,
+                createTime:'20210101',
+                isInGroup:1,
+            },
+          ]
+        },
+      }
+      )
+    }
+
   },
 };
