@@ -22,8 +22,8 @@ let access = ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION === 'site' ? 'adm
 
 //缓存code为"1"的project_folder
 let project_folders = []
-project_folders.push({"folder_id":1,"folder_name":"文件夹1"})
-project_folders.push({"folder_id":2,"folder_name":"文件夹2"})
+project_folders.push({"folder_id":1,"folder_name":"文件夹1","folder_docs":[]})
+project_folders.push({"folder_id":2,"folder_name":"文件夹2","folder_docs":[]})
 
 const getAccess = () => {
   return access;
@@ -222,7 +222,7 @@ export default {
     await waitTime(1000);
     const {folder_name} = req.query;
     let folder_count = project_folders.length;
-    project_folders.push({"folder_id":folder_count+1,"folder_name":folder_name});
+    project_folders.push({"folder_id":folder_count+1,"folder_name":folder_name,"folder_docs":[]});
     res.send({"flag":true,"msg":"创建文件夹成功","data":{}})
   },
   'POST /api/folder/update':async(req, res) => {
@@ -261,9 +261,42 @@ export default {
     await waitTime(1000);
     const {project_code} = req.query;
     if (project_code=='1'){
-      //res.send({"flag":true,"msg":"查询文件夹列表成功","data":{"project_folders":[{"folder_id":1,"folder_name":"文件夹1"},{"folder_id":2,"folder_name":"文件夹2"},{"folder_id":3,"folder_name":"文件夹3"}]}})
       res.send({"flag":true,"msg":"查询文件夹列表成功","data":{"project_folders":project_folders}})
     }
     //res.send({"flag":true,"msg":"查询文件夹列表成功","data":{"project_folders":[{"folder_id":1,"folder_name":"文件夹1"},{"folder_id":2,"folder_name":"文件夹2"},{"folder_id":3,"folder_name":"文件夹3"}]}})
-  }
+  },
+  'GET /api/doc/list':async(req, res) => {
+    await waitTime(1000);
+    const {project_code,folder_id,pageNum,pageSize} = req.query;
+    if (project_code=='1'){
+      let folder_count = project_folders.length;
+      for (let i=0; i<folder_count; i++){
+        if (project_folders[i].folder_id.toString()==folder_id.toString()){
+          res.send({"flag":true,"msg":"查询文档列表成功","data":{"folder_docs":project_folders[i].folder_docs,'cnt':project_folders[i].folder_docs.length,'current_page_num':0}});
+          break;
+        }
+        res.send({"flag":false,"msg":"查询文档列表失败","data":{}});
+      }
+    }
+    //res.send({"flag":true,"msg":"查询文件夹列表成功","data":{"project_folders":[{"folder_id":1,"folder_name":"文件夹1"},{"folder_id":2,"folder_name":"文件夹2"},{"folder_id":3,"folder_name":"文件夹3"}]}})
+  },
+  'POST /api/doc/add':async(req, res) => {
+    await waitTime(1000);
+    const {project_code,folder_id,doc_name,doc_remark,files_ob_id} = req.query;
+    if (project_code=='1'){
+      let folder_count = project_folders.length;
+      let index = 0;
+      for (let i=0; i<folder_count; i++){
+        if (project_folders[i].folder_id.toString()==folder_id.toString()){
+          index= i;
+          break;
+        }
+      }
+      project_folders[index].folder_docs.push({'doc_name':doc_name,'doc_remark':doc_remark,'doc_creator':'TEST_USER'});
+      for (let i=0; i<project_folders[index].folder_docs.length; i++){
+        project_folders[index].folder_docs[i].doc_id = i+1;
+      }
+    }
+    res.send({"flag":true,"msg":"创建文档成功","data":{}})
+  },
 };

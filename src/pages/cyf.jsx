@@ -1,57 +1,11 @@
 import React,{Component} from 'react';
-import ProCard from '@ant-design/pro-card';
-import { Alert, Avatar, Button, Tree, List, Result, Card, Table, Modal, Form, Input, Row, Divider ,Popconfirm, Layout} from 'antd';
+import { SearchOutlined, EditOutlined, DeleteOutlined,ShareAltOutlined } from '@ant-design/icons';
+import { Alert, Avatar, Icons, Button, Space, List, Result, Card, Table, Modal, Form, Input, Row, Divider ,Popconfirm, Layout} from 'antd';
 import { history, connect } from 'umi';
 import PropTypes from 'prop-types';
+import { isTemplateMiddleOrTemplateTail } from 'typescript';
 
 const { Sider, Content } = Layout;
-const { DirectoryTree } = Tree;
-
-/*const treeData = [
-  {
-    title: 'parent 0',
-    key: '0-0',
-    children: [
-      { title: 'leaf 0-0', key: '0-0-0', isLeaf: true },
-      { title: 'leaf 0-1', key: '0-0-1', isLeaf: true },
-    ],
-  },
-  {
-    title: 'parent 1',
-    key: '0-1',
-    children: [
-      { title: 'leaf 1-0', key: '0-1-0', isLeaf: true },
-      { title: 'leaf 1-1', key: '0-1-1', isLeaf: true },
-    ],
-  },
-];*/
-
-const ProductList = ({ onDelete, products }) => {
-  const columns = [{
-    title: 'Name',
-    dataIndex: 'name',
-  }, {
-    title: 'Actions',
-    render: (text, record) => {
-      return (
-        <Popconfirm title="Delete?" onConfirm={() => onDelete(record.id)}>
-          <Button>Delete</Button>
-        </Popconfirm>
-      );
-    },
-  }];
-  return (
-    <Table
-      dataSource={products}
-      columns={columns}
-    />
-  );
-};
-
-ProductList.propTypes = {
-  onDelete: PropTypes.func.isRequired,
-  //products: PropTypes.dict.isRequired,
-};
 
 class DocPage extends Component {
   //表单内容修改
@@ -64,23 +18,13 @@ class DocPage extends Component {
       }
     })
   }
-  //删除文档
-  ondeleteDoc = (id) => {
-    const{dispatch} = this.props;
-    dispatch({
-      type:'docModel/deleteDoc',
-      payload: {
-        id,
-      }
-    })
-  }
   //点击新建文件夹，设置弹窗可见
   onClickCreateFolder = () => {
     const{dispatch} = this.props;
     dispatch({
-      type:'docModel/onClickCreateFolder',
+      type:'docModel/changeState',
       payload:{
-
+        createFolderVisible:true,
       }
     })
   }
@@ -98,9 +42,39 @@ class DocPage extends Component {
   createFolderVisibleCancel = () => {
     const{dispatch} = this.props;
     dispatch({
-      type:'docModel/createFolderVisibleCancel',
+      type:'docModel/changeState',
       payload:{
-
+        createFolderVisible:false,
+      }
+    })
+  }
+  //点击新建文档，设置弹窗可见
+  onClickCreateDoc = () => {
+    const{dispatch} = this.props;
+    dispatch({
+      type:'docModel/changeState',
+      payload:{
+        createDocVisible:true,
+      }
+    })
+  }
+  //确认创建新文档
+  createDocVisibleOk = () => {
+    const{dispatch} = this.props;
+    dispatch({
+      type:'docModel/createDocVisibleOk',
+      payload:{
+        
+      }
+    })
+  }
+  //关闭新建文档弹窗
+  createDocVisibleCancel = () => {
+    const{dispatch} = this.props;
+    dispatch({
+      type:'docModel/changeState',
+      payload:{
+        createDocVisible:false,
       }
     })
   }
@@ -108,10 +82,11 @@ class DocPage extends Component {
   onClickEditFolder = (id,name) => {
     const{dispatch} = this.props;
     dispatch({
-      type:'docModel/onClickEditFolder',
+      type:'docModel/changeState',
       payload:{
-        id,
-        name,
+        editfoldername:name,
+        editfolderid:id,
+        editFolderVisible:true
       }
     })
   }
@@ -129,9 +104,9 @@ class DocPage extends Component {
   editFolderVisibleCancel = () => {
     const{dispatch} = this.props;
     dispatch({
-      type:'docModel/editFolderVisibleCancel',
+      type:'docModel/changeState',
       payload:{
-
+        editFolderVisible:false,
       }
     })
   }
@@ -139,9 +114,9 @@ class DocPage extends Component {
   AlertVisibleCancel = () => {
     const{dispatch} = this.props;
     dispatch({
-      type:'docModel/AlertVisibleCancel',
+      type:'docModel/changeState',
       payload:{
-
+        AlertVisible:false,
       }
     })
   }
@@ -155,16 +130,102 @@ class DocPage extends Component {
       }
     })
   }
-  onClickOpenFolder = (id,e) => {
+  //文档列表页码
+  onChangePage =(pageNo, pageSize)=>{
+    const {dispatch} = this.props;
+    dispatch({
+      type:'docModel/changeState',
+      payload:{
+        pageNo,
+        pageSize
+      }
+    })
+    dispatch({
+      type: 'docModel/fetchDoc',
+      payload: {
+        pageNo, 
+        pageSize
+      }
+    })
+  }
+  //打开文档列表
+  onClickOpenFolder = (id) => {
     console.log('click ' + id);
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'docModel/changeState',
+      payload:{
+        remotefolderid: id,
+      }
+    })
+    dispatch({
+      type: 'docModel/reloadDoc',
+      payload:{
+
+      }
+    })
+  }
+  //文档详情查看
+  onClickDetaildoc = (id) => {
+    console.log('detail:',id);
+  }
+  //文档编辑
+  onClickEditdoc = (id) => {
+    console.log('edit:',id);
+  }
+  //文档删除
+  onClickDeletedoc = (id) => {
+    console.log('del:',id);
+  }
+  //文档分享
+  onClickSharedoc = (id) => {
+    console.log('share:',id);
   }
   render(){
+    const columns = [{
+      title:'序号',
+      dataIndex:'doc_id',
+      key: 'doc_id',
+      align: 'center',
+    }, {
+      title: '文档名称',
+      dataIndex: 'doc_name',
+      key: 'doc_name',
+      align: 'center',
+    }, {
+      title: '创建者',
+      dataIndex: 'doc_creator',
+      key: 'doc_creator',
+      align: 'center',
+    }, {
+      title: '文档备注',
+      dataIndex: 'doc_remark',
+      key: 'doc_remark',
+      align: 'center',
+    }, {
+      title: '操作',
+      dataIndex: 'doc_action',
+      key: 'doc_action',
+      align: 'center',
+      render: (text, record) => (
+        <Space size="middle">
+          <a onClick={this.onClickDetaildoc.bind(this,record.doc_id)}><SearchOutlined /></a>
+          <a onClick={this.onClickEditdoc.bind(this,record.doc_id)}><EditOutlined /></a>
+          <a onClick={this.onClickDeletedoc.bind(this,record.doc_id)}><DeleteOutlined /></a>
+          <a onClick={this.onClickSharedoc.bind(this,record.doc_id)}><ShareAltOutlined /></a>
+        </Space>
+      ),
+    },]
+    
     const {docModel,dispatch} = this.props;
-    const {listcontent,AlertVisible,alertmessage,createFolderVisible,editFolderVisible,editfoldername,editfolderid,addfoldername,project_name,folderlist} = docModel;
-    /*var treeData = [];
-    for (var i=0;i<folderlist.length;i++){
-      treeData.push({title:folderlist[i].folder_name,key:'0-'+folderlist[i].folder_id,children:[]});
-    };*/
+    const {doclist,AlertVisible,alertmessage,
+      createFolderVisible,editFolderVisible,editfoldername,editfolderid,
+      addfoldername,project_name,folderlist,remotefolderid,
+      createDocVisible,editDocVisible,
+      adddocname,adddocremark,
+      editdocname,editdocremark,
+      pageNo,pageSize,totalCount} = docModel;
+   
     return (
       <Layout>
         <Sider style={{ height: '100%', background: 'white' ,minHeight: document.documentElement.clientHeight - 140}}>
@@ -224,6 +285,7 @@ class DocPage extends Component {
               closable
             />
           </Modal>
+          <p>{project_name}</p>
           <List
             itemLayout="horizontal"
             dataSource={folderlist}
@@ -243,10 +305,34 @@ class DocPage extends Component {
           />,
         </Sider>
         <Content style={{ height: '100%', background: 'white' ,minHeight: document.documentElement.clientHeight - 140}}>
-          <div>
-            <h2>List of Products</h2>
-            <ProductList onDelete={this.ondeleteDoc} products={listcontent} />
-          </div>
+          <Button type="default" style={{width:'100%',backgroundColor:'white'}} onClick={this.onClickCreateDoc}>
+            +新建文档
+          </Button>
+          <p>当前文件夹ID:{remotefolderid}</p>
+          <Table columns={columns} dataSource={doclist} rowKey="doc_id" pagination={{
+            current: pageNo,
+            total: totalCount,
+            pageSize: pageSize,
+            onChange: this.onChangePage
+          }}/>
+          <Modal
+            visible={createDocVisible}
+            title="新建文档"
+            onOk={this.createDocVisibleOk}
+            onCancel={this.createDocVisibleCancel}
+            footer={[
+              <Button key="submit" type="primary" onClick={this.createDocVisibleOk}>
+                确定
+              </Button>,
+              <Button key="back" onClick={this.createDocVisibleCancel}>
+                取消
+              </Button>,
+            ]}
+          >
+            <p>新建文档</p>
+            <Input value={adddocname} addonBefore="文档名称*" addonAfter="" onChange={this.onChangeField.bind(this,'adddocname')}/>
+            <Input value={adddocremark} addonBefore="文档备注*" addonAfter="" onChange={this.onChangeField.bind(this,'adddocremark')}/>
+          </Modal>
         </Content>
       </Layout>
     );
@@ -257,12 +343,3 @@ class DocPage extends Component {
 export default connect(({ docModel }) => ({
   docModel,
 }))(DocPage);
-
-/*<span style={{marginLeft:'10%'}}>{project_name}</span>
-<DirectoryTree
-  multiple
-  defaultExpandAll
-  onSelect={this.onSelect}
-  onExpand={this.onExpand}
-  treeData={treeData}
-/>*/
