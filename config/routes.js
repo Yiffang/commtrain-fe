@@ -24,6 +24,11 @@ export default [
     component: './Demo',
   },
   {
+    path: '/inf',
+    // layout: false,
+    component: './Inf',
+  },
+  {
     path: '/test',
     component: './Test',
   },
