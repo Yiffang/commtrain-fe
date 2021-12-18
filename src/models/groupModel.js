@@ -35,10 +35,12 @@ export default {
     effects: {
         *fetch({payload}, { call, put }) {
             // const {searchType} = yield select(state=>state.groupModel);
-            const {searchType}=payload;
+            const {searchType,searchCentent}=payload;
             console.log(searchType);
+            console.log(searchCentent);
             const { flag, data } = yield call(grouplistService.listGroup,{
-                searchType:searchType
+                searchType:searchType,
+                searchCentent:searchCentent,
             });
             const { grouplist } = data;
             console.log(grouplist);

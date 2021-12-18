@@ -13,6 +13,8 @@ const content = (
     <p>请联系该群组管理员</p>
   </div>
 );
+
+//这是搜索框样式
 const suffix = (
   <AudioOutlined
     style={{
@@ -21,7 +23,9 @@ const suffix = (
     }}
   />
 );
-const onSearch = value => console.log(value);
+
+
+
 //这是表格的样式
 const columns = [
     {
@@ -96,7 +100,7 @@ const columns = [
           const {isInGroup}=record;
           if(isInGroup==1){
             return(
-              <Link to="/groupmember?groupname={text}"> 
+              <Link to={{path:"/groupmember",query:{groupname:{text}}}} > 
               <Button  icon={<EditOutlined />}/>
               </Link>
                   )
@@ -111,15 +115,14 @@ const columns = [
         },
       },];
 
-
-
-//这是tab的样式，这个callback函数还不知道啥意思
+ //下面是此页面的函数组件
 const GroupList=(props) => {
   console.log(props);
   const { groupModel, dispatch } = props;
   const { grouplist } = groupModel;
   console.log(grouplist);
   const { TabPane } = Tabs;
+
   //这个函数根据点击tab，来确定返回的是所有群组还是已加入群组
   const onClickViewGroup=(props)=>{
   console.log(props)
@@ -130,6 +133,17 @@ const GroupList=(props) => {
           payload:{searchType:searchType},
           })
           }  ;
+    
+    //这是搜索框对应函数
+    const onSearch = (value) => {
+        dispatch(
+          {
+            type:'groupModel/fetch',
+            payload:{searchCentent:value}
+          }
+        )
+          }
+
       return (
         <div>
           <PageHeader className="site-page-header" title="群组" />

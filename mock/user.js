@@ -217,8 +217,9 @@ export default {
     res.send({"flag":true,"msg":"查询成功","data":{"loginName":"tanj_24","realName":"谈健","admin":true}})
   },
   'GET /api/group/list':(req, res) => {
-    const {searchType} = req.query;
-    if(searchType==0){
+    const {searchType,searchContent} = req.query;
+    console.log(searchContent);
+    if(searchContent !== null){
       res.send({
         "flag": true,
         "msg": "批量查询成功",
@@ -231,70 +232,91 @@ export default {
           "grouplist": [
             {
               key: '1',
-              groupName: 'John Brown',
+              groupName: '查询出来的',
               info: 'nothing',
               groupAdmin: 'luke',
               groupSize: 44,
               createTime:'20210101',
               isInGroup:1,
-            },
-            {
-                key: '2',
-                groupName: 'John Brown',
+            },]
+    }})}
+    else if(searchType==0){
+        res.send({
+          "flag": true,
+          "msg": "批量查询成功",
+          "data": {
+            "pageSize": 10,
+            "totalCount": 2,
+            "pageNum": 0,
+            "start": 0,
+            "totalPages": 1,
+            "grouplist": [
+              {
+                key: '1',
+                groupName: '已加入群组1',
                 info: 'nothing',
                 groupAdmin: 'luke',
                 groupSize: 44,
                 createTime:'20210101',
                 isInGroup:1,
-            },
-            {
-                key: '3',
-                groupName: 'John Brown',
-                info: 'nothing',
-                groupAdmin: 'luke',
-                groupSize: 44,
-                createTime:'20210101',
-                isInGroup:0,
-            },
-          ]
-        },
+              },
+              {
+                  key: '2',
+                  groupName: '已加入群组2',
+                  info: 'nothing',
+                  groupAdmin: 'luke',
+                  groupSize: 44,
+                  createTime:'20210101',
+                  isInGroup:1,
+              },
+              {
+                  key: '3',
+                  groupName: '未加入群组',
+                  info: 'nothing',
+                  groupAdmin: 'luke',
+                  groupSize: 44,
+                  createTime:'20210101',
+                  isInGroup:0,
+              },
+            ]
+          },
+        }
+        )
       }
-      )
-    }
-    else{
-      res.send({
-        "flag": true,
-        "msg": "批量查询成功",
-        "data": {
-          "pageSize": 10,
-          "totalCount": 2,
-          "pageNum": 0,
-          "start": 0,
-          "totalPages": 1,
-          "grouplist": [
-            {
-              key: '1',
-              groupName: 'John Brown',
-              info: 'nothing',
-              groupAdmin: 'luke',
-              groupSize: 44,
-              createTime:'20210101',
-              isInGroup:1,
-            },
-            {
-                key: '2',
-                groupName: 'John Brown',
+      else{
+        res.send({
+          "flag": true,
+          "msg": "批量查询成功",
+          "data": {
+            "pageSize": 10,
+            "totalCount": 2,
+            "pageNum": 0,
+            "start": 0,
+            "totalPages": 1,
+            "grouplist": [
+              {
+                key: '1',
+                groupName: '已加入群组1',
                 info: 'nothing',
                 groupAdmin: 'luke',
                 groupSize: 44,
                 createTime:'20210101',
                 isInGroup:1,
-            },
-          ]
-        },
+              },
+              {
+                  key: '2',
+                  groupName: '已加入群组2',
+                  info: 'nothing',
+                  groupAdmin: 'luke',
+                  groupSize: 44,
+                  createTime:'20210101',
+                  isInGroup:1,
+              },
+            ]
+          },
+        }
+        )
       }
-      )
-    }
-
-  },
+  }
+    
 };
