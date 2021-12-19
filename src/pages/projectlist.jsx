@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { history, connect } from 'umi';
 import ProTable from '@ant-design/pro-table';
-import { StarTwoTone,EditTwoTone,EditFilled} from '@ant-design/icons';
+import { StarTwoTone,EditTwoTone,DeleteTwoTone,getTwoToneColor, setTwoToneColor } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import { Tag } from 'antd';
 
@@ -74,48 +74,33 @@ const data = [
 
 const columns_projectlist = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
+    title: '项目',
+    dataIndex: 'projectlist_name',
+    key: 'projectlist_name',
     render: text => <a>{text}</a>,
   },
   {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
+    title: '项目简介',
+    dataIndex: 'projectlist_intro',
+    key: 'projectlist_intro',
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
+    title: '创建者',
+    dataIndex: 'projectlist_creator',
+    key: 'projectlist_creator',
   },
   {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: tags => (
-      <>
-        {tags.map(tag => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
+    title: '创建时间',
+     dataIndex: 'projectlist_createtime',
+    key: 'projectlist_createtime',
   },
   {
-    title: 'Action',
+    title: '操作',
     key: 'action',
-    render: (text, record) => (
+    render: (edit,star) => (
       <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
+        <a><EditTwoTone /></a>
+        <a><DeleteTwoTone /></a>
       </Space>
     ),
   },
@@ -124,24 +109,24 @@ const columns_projectlist = [
 const data_projectlist = [
   {
     key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
+    projectlist_name: '金融科技发展项目1',
+    projectlist_intro: 1111,
+    projectlist_creator: '杜思佳',
+    projectlist_createtime: '2021/12/20 12:35',
   },
   {
     key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
+    projectlist_name: '金融科技发展项目2',
+    projectlist_intro: 22222,
+    projectlist_creator: '杜思佳',
+    projectlist_createtime: '2021/12/20 12:35',
   },
   {
     key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
+    projectlist_name: '金融科技发展项目3',
+    projectlist_intro: 3333,
+    projectlist_creator: '杜思佳',
+    projectlist_createtime: '2021/12/20 12:35',
   },
 ];
 
