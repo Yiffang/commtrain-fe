@@ -105,7 +105,9 @@ const columns_projectlist = [
     ),
   },
 ];
-
+/*
+以下是项目列表页-dsj
+*/
 const data_projectlist = [
   {
     key: '1',
@@ -191,8 +193,17 @@ class Collection extends Component {
 
         <Tabs defaultActiveKey="1">
           <TabPane tab="首页" key="1" >
-            
-  
+            <Card>            
+               <Row justify="end">
+                 <Col span={8}> <Search placeholder="请输入项目名称" onSearch={onSearch}  enterButton/> </Col>
+               </Row>
+             <Divider/>
+
+
+  {/* 此处可添加思琪的项目卡片页 */}
+  此处可添加思琪的项目卡片页 
+
+            </Card>  
           </TabPane>
           <TabPane tab="项目" key="2">
 
@@ -228,7 +239,7 @@ class Collection extends Component {
                    </Card>
           </TabPane>
           <TabPane tab="成员" key="4">
-            Content of Tab Pane 4
+            此处为成员页面
           </TabPane>
         </Tabs>
        
