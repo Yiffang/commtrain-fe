@@ -60,9 +60,7 @@ const columns = [
               onChange={(UserID) => removeGruopuser(UserID)}
               type="link"
               icon={<DeleteOutlined />}
-            >
-               
-              </Button>
+            ></Button>
           </>
         );
       } 
