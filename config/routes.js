@@ -29,6 +29,11 @@ export default [
     component: './Group',
   },
   {
+    path: '/groupuseredit',
+    // layout: false,
+    component: './GroupUserEdit',
+  },
+  {
     path: '/test',
     component: './Test',
   },

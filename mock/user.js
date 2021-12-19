@@ -216,10 +216,68 @@ export default {
   'GET /login/current': (req, res) => {
     res.send({"flag":true,"msg":"查询成功","data":{"loginName":"tanj_24","realName":"谈健","admin":true}})
   },
+  'GET /api/group/userlist': (req, res) => {
+    res.send({
+      "flag": true,
+      "msg": "查询成功",
+      "data": {
+        "groupuserlist": [
+          {
+            key: '1',
+            UserName: '张三',
+            UserID: 'zhang3_001',
+            charactor: '管理员',
+          },
+          {
+            key: '2',
+            UserName: '赵四',
+            UserID: 'zhao4_002',
+            charactor: '管理员',
+          },
+          {
+            key: '3',
+            UserName: '王五',
+            UserID: 'wang5_003',
+            charactor: '成员',
+          },
+          {
+            key: '4',
+            UserName: '马六',
+            UserID: 'ma6_004',
+            charactor: '成员',
+          },
+          {
+            key: '5',
+            UserName: '李七',
+            UserID: 'Lee7_005',
+            charactor: '成员',
+          },
+          {
+            key: '6',
+            UserName: '柳八',
+            UserID: 'Liu_8_006',
+            charactor: '成员',
+          },
+          {
+            key: '7',
+            UserName: '九妹',
+            UserID: '9sister_007',
+            charactor: '成员',
+          },
+          {
+            key: '8',
+            UserName: '孙十',
+            UserID: 'sun10_008',
+            charactor: '成员',
+          },]
+      }
+    })
+  },
+
   'GET /api/group/list':(req, res) => {
     const {searchType,searchContent} = req.query;
     console.log(searchContent);
-    if(searchContent !== null){
+    if(searchContent !== undefined){
       res.send({
         "flag": true,
         "msg": "批量查询成功",

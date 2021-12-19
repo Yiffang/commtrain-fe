@@ -72,7 +72,7 @@ const columns = [
         if(isInGroup==1){
           return(
             <>
-            <Link to="/groupmember?groupname={text}">{text}</Link>
+            <Link to="/groupuseredit?groupname={text}">{text}</Link>
             </>
           )
         }
@@ -142,18 +142,18 @@ const GroupList=(props) => {
             payload:{searchCentent:value}
           }
         )
-          }
-
+          };
       return (
         <div>
           <PageHeader className="site-page-header" title="群组" />
-
+          <Row justify="space-around">
+            <Col span={4} offset={2}>
               <Link to="/groupmember?groupname={text}">
                 <Button type="primary">新建</Button>
               </Link>
-
               <Search placeholder="按名称搜索" onSearch={onSearch} style={{ width: 200 }} />
-
+            </Col>
+          </Row>
 
           <Tabs defaultActiveKey="1" onChange={(key) => onClickViewGroup(key - 1)}>
             <TabPane tab="已加入群组" key="1">
