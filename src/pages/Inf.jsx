@@ -1,86 +1,68 @@
-import { Table, Tag, Space } from 'antd';
-
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: text => <a>{text}</a>,
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: tags => (
-      <>
-        {tags.map(tag => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (text, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
-];
-
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
-
-
-
-
+import { Table, Card, Tag, Space, PageHeader, Divider, Input, Button, Form, Checkbox, Row, Col } from 'antd';
 
 
 
 export default () => {
     return <div>
-        <Table columns={columns} dataSource={data}></Table>
+     <Card>
+      <Row>
+        <PageHeader
+             className="site-page-header"
+             title="账户管理"
+        />
+      </Row>
+      <Divider orientation="left"></Divider>
+         <PageHeader
+             className="site-page-header"
+             title="联系方式："
+             subTitle="你当前的账户安全系数较低，请补充绑定信息！"
+         /> 
+      <Row>
+         <Col span={10} offset={1}>
+             <Input.Group compact="false">
+             <Input style={{ width: 'calc(100% - 200px)' }} placeholder="请输入电话" />
+             </Input.Group>
+             <Button type="primary" style={{marginTop:'10px'}}>提交</Button>
+         </Col>
+      </Row>
+      <PageHeader
+             className="site-page-header"
+             title="邮箱："
+             subTitle="你当前的账户安全系数较低，请补充绑定信息！"
+      />
+      <Row>
+          <Col span={10} offset={1}>
+             <Input.Group compact="false">
+             <Input style={{ width: 'calc(100% - 200px)' }} placeholder="请输入邮箱" />
+             </Input.Group>
+             <Button type="primary" style={{marginTop:'10px'}}>提交</Button>
+          </Col>
+      </Row>
+      <PageHeader
+             className="site-page-header"
+             title="修改密码："
+      />
+      <Row>
+          <Col span={10} offset={1}>
+             <Input.Group compact="false">
+             <Input style={{ width: 'calc(100% - 200px)' }} placeholder="请输入新密码" />
+             </Input.Group>
+          </Col>
+      </Row>
+      <Row>
+           <Col span={10} offset={1}>
+             <Input.Group compact="false">
+             <Input style={{ width: 'calc(100% - 200px)',marginTop:'5px' }} placeholder="请再次输入新密码" />
+             </Input.Group>
+           </Col>
+      </Row>
+      <Row>
+           <Col span={10} offset={1}>
+             <Button type="primary" htmlType="submit" style={{marginTop:'10px'}}>
+               提交
+             </Button>
+           </Col>
+      </Row>
+     </Card>
     </div>;
   };

@@ -29,6 +29,11 @@ export default [
     component: './Inf',
   },
   {
+    path: '/manage',
+    // layout: false,
+    component: './Manage',
+  },
+  {
     path: '/test',
     component: './Test',
   },
