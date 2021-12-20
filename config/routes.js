@@ -19,6 +19,10 @@ export default [
     ],
   },
   {
+    path:'/groupindex',
+    component: './GroupIndex/GroupIndexLayout'
+  },
+  {
     path: '/projectlist',
     // layout: false,
     component: './projectlist',
