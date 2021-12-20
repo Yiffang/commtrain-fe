@@ -19,6 +19,11 @@ export default [
     ],
   },
   {
+    path: '/projectlist',
+    // layout: false,
+    component: './projectlist',
+  },
+  {
     path: '/demo',
     // layout: false,
     component: './Demo',
