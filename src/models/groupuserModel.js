@@ -52,7 +52,7 @@ export default {
             }
         },
 
-        *removeUser({}, {call, put,select}) {
+        *removeUser({payload}, {call, put,select}) {
             //const {addLoginName,addNickName}= yield select(state=>state.userModel);
             const {loginName}=payload;
             const {flag, msg} = yield call(userlistService.addUser,{

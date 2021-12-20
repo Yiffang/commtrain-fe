@@ -72,9 +72,9 @@ const columns = [
         if(isInGroup==1){
           return(
             <>
-            <Link to="/groupuseredit?groupname={text}">{text}</Link>
+            <Link to={`/groupuseredit?groupname=${text}`}>{text}</Link>
             </>
-          )
+          ) 
         }
         else{
           return(

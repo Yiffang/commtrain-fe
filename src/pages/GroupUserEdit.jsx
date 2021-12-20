@@ -3,6 +3,7 @@ import  { useState } from 'react';
 import {  ConsoleSqlOutlined, DeleteOutlined, } from '@ant-design/icons';
 import { PageContainer, } from '@ant-design/pro-layout';
 import { connect } from 'umi';
+import { login } from '@/services/ant-design-pro/api';
 
 
 //这是选择器数据
@@ -19,6 +20,21 @@ function handleChange(value) {
 
 
 const Groupuseredit= (props) => {
+
+    //model相关变量
+    console.log(props);
+    const { groupuserModel, dispatch } = props;
+    const { groupuserlist } = groupuserModel;
+    console.log(groupuserlist);
+  
+  //移除群组成员
+  const removeGruopuser=(loginname)=>{
+    console.log(loginname);
+    dispatch({
+      type:'groupuserModel/removeUser',
+       payload:{loginID:loginname},
+       })
+       }  ;
 
   //这是表格的样式
 const columns = [
@@ -53,33 +69,14 @@ const columns = [
       key: 'action',
       dataIndex: 'action',
       render: (text,record)=>{
-        const {UserID} = record;
+        const {loginName} = record;
         return (
-          <>
-            <Button
-              onChange={(UserID) => removeGruopuser(UserID)}
-              type="link"
-              icon={<DeleteOutlined />}
-            ></Button>
-          </>
+          <DeleteOutlined style={{ fontSize: '16px', color: '#08c' }} onClick={()=>{console.log(loginName);removeGruopuser(loginName);}}/>
         );
       } 
     },
 ];
-  //model相关变量
-  console.log(props);
-  const { groupuserModel, dispatch } = props;
-  const { groupuserlist } = groupuserModel;
-  console.log(groupuserlist);
 
-//移除群组成员
-const removeGruopuser=(props)=>{
-  console.log(props);
-  dispatch({
-    type:'groupuserModel/removeUser',
-     payload:{loginID:props},
-     })
-     }  ;
 
 
   //弹窗相关变量
