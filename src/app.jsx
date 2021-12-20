@@ -51,10 +51,12 @@ export async function getInitialState() {
 
 export const layout = ({ initialState }) => {
   return {
+    collapsedButtonRender: false,
     disableContentMargin: false,
     waterMarkProps: {
       content: initialState?.currentUser?.name,
     },
+    title: "交响乐v1.0",
     rightContentRender: () => <RightContent />,
     footerRender: () => <Footer />,
     onPageChange: () => {
