@@ -17,7 +17,7 @@ export default {
     subscriptions: {
         setup({dispatch, history}) {
             history.listen(location => {
-                if (location.pathname == '/demo') {
+                if (location.pathname == '/manage') {
                     dispatch({
                         type: 'reloadList',
                         payload: {},
@@ -61,6 +61,7 @@ export default {
                 pageSize,
             });
             const { records, totalCount, pageNum } = data;
+            //console.log(records);
             if(flag) {
                 yield put({
                     type: 'changeState',
@@ -68,6 +69,7 @@ export default {
                         userList: records,
                         totalCount,
                         pageNo: pageNum +1, //前端页号需要加1
+
                     }
                 })
             }
@@ -75,10 +77,12 @@ export default {
 
         *addUser({}, {call, put,select}) {
             const {addLoginName,addNickName}= yield select(state=>state.userModel);
+            console.log(addLoginName,addNickName);
             const {flag, msg} = yield call(userlistService.addUser,{
                 loginName: addLoginName,
                 nickName: addNickName,
             });
+            console.log(flag);
             if(flag) {
                 yield put({
                     type: 'reloadList',

@@ -207,7 +207,10 @@ export default {
     });
   },
   'GET /api/user/list':(req, res) => {
-    res.send({"flag":true,"msg":"批量查询成功","data":{"pageSize":10,"totalCount":2,"pageNum":0,"start":0,"totalPages":1,"records":[{"id":2,"loginName":"hahaha","nickName":"哈哈哈111","password":"hahaha"},{"id":1,"loginName":"tanj_24","nickName":"tanjian","password":"tanj_24"}]}})
+        res.send({"flag":true,"msg":"批量查询成功","data":{"pageSize":10,"totalCount":2,"pageNum":0,"start":0,"totalPages":1,
+        "records":[{"id":2,"loginName":"hahaha","realName":"哈哈哈111","password":"hahaha","time":"test time"},
+        {"id":3,"loginName":"hahaha","realName":"哈哈哈111","password":"hahaha","time":"test time"}],
+      }});
   },
   'GET  /api/login/captcha': getFakeCaptcha,
   'POST /login/api': (req, res) => {
@@ -216,85 +219,7 @@ export default {
   'GET /login/current': (req, res) => {
     res.send({"flag":true,"msg":"查询成功","data":{"loginName":"tanj_24","realName":"谈健","admin":true}})
   },
-  'GET /api/group/list':(req, res) => {
-    const {searchType} = req.query;
-    if(searchType==0){
-      res.send({
-        "flag": true,
-        "msg": "批量查询成功",
-        "data": {
-          "pageSize": 10,
-          "totalCount": 2,
-          "pageNum": 0,
-          "start": 0,
-          "totalPages": 1,
-          "grouplist": [
-            {
-              key: '1',
-              groupName: 'John Brown',
-              info: 'nothing',
-              groupAdmin: 'luke',
-              groupSize: 44,
-              createTime:'20210101',
-              isInGroup:1,
-            },
-            {
-                key: '2',
-                groupName: 'John Brown',
-                info: 'nothing',
-                groupAdmin: 'luke',
-                groupSize: 44,
-                createTime:'20210101',
-                isInGroup:1,
-            },
-            {
-                key: '3',
-                groupName: 'John Brown',
-                info: 'nothing',
-                groupAdmin: 'luke',
-                groupSize: 44,
-                createTime:'20210101',
-                isInGroup:0,
-            },
-          ]
-        },
-      }
-      )
-    }
-    else{
-      res.send({
-        "flag": true,
-        "msg": "批量查询成功",
-        "data": {
-          "pageSize": 10,
-          "totalCount": 2,
-          "pageNum": 0,
-          "start": 0,
-          "totalPages": 1,
-          "grouplist": [
-            {
-              key: '1',
-              groupName: 'John Brown',
-              info: 'nothing',
-              groupAdmin: 'luke',
-              groupSize: 44,
-              createTime:'20210101',
-              isInGroup:1,
-            },
-            {
-                key: '2',
-                groupName: 'John Brown',
-                info: 'nothing',
-                groupAdmin: 'luke',
-                groupSize: 44,
-                createTime:'20210101',
-                isInGroup:1,
-            },
-          ]
-        },
-      }
-      )
-    }
-
-  },
+  'POST /api/user/add':(req,res)=>{
+    res.send({"flag":true,"msg":"添加用户成功","data":{}})
+  }
 };
