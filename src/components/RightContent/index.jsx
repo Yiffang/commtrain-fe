@@ -1,10 +1,8 @@
-import { Space } from 'antd';
-import { Alert } from 'antd';
+import { Space, Tooltip , Alert, Avatar} from 'antd';
 import { ReactDOM } from 'react-dom';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { QuestionCircleOutlined,TeamOutlined } from '@ant-design/icons';
 import React from 'react';
 import { useModel, SelectLang } from 'umi';
-import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
 import { render } from 'enzyme';
@@ -72,23 +70,17 @@ const GlobalHeaderRight = () => {
         onClick={() =>{
           window.location.replace('/fakeurlgroup');
         }}>
-        <img src='/icons/icon-64x64.png'/>
-        <div><font color='#ffffff'>{'群组'}{groupnum}</font></div>
+        <TeamOutlined />
+        <div className={styles.username}>{groupnum}</div>
       </span>
-      <span
-        className={styles.action}
-        onClick={() =>{
-          window.location.replace('/fakeurluser');
-        }}>
-        <img src={usericon}/>
-        <div><font color='#ffffff'>{username}</font></div>
+      <span className={styles.action}>
+      <Avatar size={"small"} src="/images/pic_user_logo.png"/>
+        <div className={styles.username}>{username}</div>
       </span>
-      <span
-        className={styles.action}
-        onClick={() => {
-          window.alert("请联系管理员XXX老师\n邮箱为XXX");
-        }}>
+      <span>
+          <Tooltip title="请联系系统管理员">
         <QuestionCircleOutlined />
+        </Tooltip>
       </span>
 
     </Space>

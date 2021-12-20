@@ -218,7 +218,13 @@ export default {
   },
   'GET  /api/login/captcha': getFakeCaptcha,
   'GET /login/current':(req, res) => {
-    res.send({"flag":true,"msg":"mock user","data":{"id":1,"name":"TEST USER","group_num":233,"user_pic_path":'icons/icon-64x64.png'}})
+    res.send({"flag":true,"msg":"mock user","data":{
+      "id":1,"name":"TEST USER","group_num":233,"user_pic_path":'icons/icon-64x64.png',
+      "defaultGroup": {
+        "code":"default",
+        "name":"金科mini群组"
+      }
+    }})
   },
   'POST /api/folder/add':async(req, res) => {
     await waitTime(1000);
