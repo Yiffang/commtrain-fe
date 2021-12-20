@@ -13,19 +13,23 @@ export default {
         createFolderVisible:false,
         editFolderVisible:false,
         createDocVisible:false,
+        showDocVisible:false,
         editDocVisible:false,
+        shareDocVisible:false,
+        shareContent:"",
         AlertVisible:false,
         aleartmessage:"默认警告信息",
         project_code: "1",
         project_name:'我的项目',
-        addfoldername:'文件夹名称(必填)',
+        addfoldername:'',
         editfoldername:'',
         editfolderid: -1,
-        adddocname:'文档名称(必填)',
+        adddocname:'',
         adddocremark:'',
         editdocname:'',
         editdocremark:'',
         remotefolderid: 1,
+        flag_folderchange: false,
         folderlist: [{folder_id:1,folder_name:'文件夹1'},{folder_id:2,folder_name:"文件夹2"}],
         pageSize: 10,
         pageNo: 1,
@@ -97,22 +101,31 @@ export default {
         },
         *fetchDoc({payload}, { call, put, select}) {
             const {pageNo, pageSize, totalCount} = payload;
-            const {remotefolderid,project_code} = yield select(state=>state.docModel);
+            const {remotefolderid,project_code,flag_folderchange} = yield select(state=>state.docModel);
+            let pageNum = 0;
+            if (flag_folderchange){
+                pageNum = 0;
+            }
+            else{
+                pageNum = pageNo-1;
+            }
             const { flag, data, msg } = yield call(docService.listAllDoc, {
                 project_code,
                 folder_id: remotefolderid,
-                pageNum: pageNo-1,
+                pageNum: pageNum,
                 pageSize,
             });
-            const { folder_docs, cnt, current_page_num } = data;
-            console.log(folder_docs, cnt ,current_page_num);
+            console.log(remotefolderid);
             if(flag) {
+                const { folder_docs, cnt, current_page_num } = data;
+                console.log(folder_docs, cnt ,current_page_num);
                 yield put({
                     type: 'changeState',
                     payload: {
                         doclist: folder_docs,
                         totalCount: cnt, 
                         pageNo: current_page_num+1, //前端页号需要加1
+                        flag_folderchange: false,
                     }
                 })
             }
@@ -247,6 +260,32 @@ export default {
                 });
             }
         },
-        
+        //删除文档
+        *deleteDoc({payload},{call,put,select}){
+            const {id} = payload;
+            const {project_code,remotefolderid} = yield select(state=>state.docModel);
+            const {flag, msg} = yield call(docService.deleteDoc,{
+                project_code: project_code,
+                folder_id: remotefolderid,
+                doc_id: id,
+            });
+            if(flag) {
+                yield put({
+                    type: 'reloadDoc',
+                    payload: {
+                        
+                    }
+                })
+                message.success(msg);
+            }   else {
+                yield put({type:'changeState',payload:{alertmessage:msg}});
+                yield put({
+                    type: 'AlertVisibleOk',
+                    payload:{
+
+                    }
+                });
+            }
+        },
     },
   };

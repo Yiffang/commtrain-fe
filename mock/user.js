@@ -1,3 +1,5 @@
+import { stripBasename } from "history/PathUtils";
+
 const waitTime = (time = 100) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -228,7 +230,7 @@ export default {
   'POST /api/folder/update':async(req, res) => {
     await waitTime(1000);
     const {folder_name,folder_id} = req.query;
-    const max_namelength = 5;
+    const max_namelength = 20;
     if (folder_name.length>max_namelength){
       res.send({"flag":false,"msg":"文件名过长","data":{}})
       return;
@@ -273,10 +275,11 @@ export default {
       for (let i=0; i<folder_count; i++){
         if (project_folders[i].folder_id.toString()==folder_id.toString()){
           res.send({"flag":true,"msg":"查询文档列表成功","data":{"folder_docs":project_folders[i].folder_docs,'cnt':project_folders[i].folder_docs.length,'current_page_num':0}});
-          break;
+          return;
         }
-        res.send({"flag":false,"msg":"查询文档列表失败","data":{}});
       }
+      res.send({"flag":false,"msg":"查询文档列表失败","data":{}});
+      return;
     }
     //res.send({"flag":true,"msg":"查询文件夹列表成功","data":{"project_folders":[{"folder_id":1,"folder_name":"文件夹1"},{"folder_id":2,"folder_name":"文件夹2"},{"folder_id":3,"folder_name":"文件夹3"}]}})
   },
@@ -298,5 +301,28 @@ export default {
       }
     }
     res.send({"flag":true,"msg":"创建文档成功","data":{}})
+  },
+  'POST /api/doc/delete':async(req, res) => {
+    await waitTime(1000);
+    const {doc_id,folder_id} = req.query;
+    let folder_count = project_folders.length;
+    for (let i=0; i<folder_count; i++){
+      if (project_folders[i].folder_id.toString()==folder_id.toString()){
+        let doc_count = project_folders[i].folder_docs.length;
+        //console.log(doc_count,doc_id);
+        for (let j=0; j<doc_count; j++){
+          if (project_folders[i].folder_docs[j].doc_id.toString()==doc_id.toString()){
+            project_folders[i].folder_docs.splice(j,1);
+            break;
+          }
+        }
+        for (let j=0; j<doc_count-1; j++){
+          project_folders[i].folder_docs[j].doc_id = j+1;
+        }
+        res.send({"flag":true,"msg":"删除文档成功","data":{}});
+        return;
+      }
+    }
+    res.send({"flag":true,"msg":"删除文档成功","data":{}});
   },
 };

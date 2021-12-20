@@ -1,11 +1,15 @@
 import React,{Component} from 'react';
-import { SearchOutlined, EditOutlined, DeleteOutlined,ShareAltOutlined } from '@ant-design/icons';
-import { Alert, Avatar, Icons, Button, Space, List, Result, Card, Table, Modal, Form, Input, Row, Divider ,Popconfirm, Layout} from 'antd';
+import { SearchOutlined, EditOutlined, DeleteOutlined,ShareAltOutlined,ProjectOutlined } from '@ant-design/icons';
+import { Alert, Avatar, Icons, Button, Space, List, Result, Card, Table, Modal, Form, Input, Row, Col, Divider ,Popconfirm, Layout, Menu, PageHeader} from 'antd';
 import { history, connect } from 'umi';
+
 import PropTypes from 'prop-types';
-import { isTemplateMiddleOrTemplateTail } from 'typescript';
+import { isFunctionOrConstructorTypeNode, isTemplateMiddleOrTemplateTail } from 'typescript';
+import copy from 'copy-to-clipboard';
+import docModel from '@/models/docModel';
 
 const { Sider, Content } = Layout;
+const {SubMenu} = Menu;
 
 class DocPage extends Component {
   //表单内容修改
@@ -156,6 +160,7 @@ class DocPage extends Component {
       type: 'docModel/changeState',
       payload:{
         remotefolderid: id,
+        flag_folderchange: true,
       }
     })
     dispatch({
@@ -175,13 +180,58 @@ class DocPage extends Component {
   }
   //文档删除
   onClickDeletedoc = (id) => {
-    console.log('del:',id);
+    const{dispatch} = this.props;
+    dispatch({
+      type:'docModel/deleteDoc',
+      payload:{
+        id,
+      }
+    })
   }
   //文档分享
   onClickSharedoc = (id) => {
-    console.log('share:',id);
+    const{dispatch} = this.props;
+    const{project_code,remotefolderid} = this.props.docModel;
+    dispatch({
+      type:'docModel/changeState',
+      payload:{
+        shareDocVisible:true,
+        shareContent:location.toString()+"?project_code="+project_code.toString()+"&folder_id="+remotefolderid.toString()+"&doc_id="+id.toString(),
+      }
+    })
   }
+  //文档分享取消
+  shareDocVisibleCancel = () => {
+    const{dispatch} = this.props;
+    dispatch({
+      type:'docModel/changeState',
+      payload:{
+        shareDocVisible:false,
+      }
+    })
+  }
+  //复制到剪贴板
+  CopyText = () =>{
+    copy(this.props.docModel.shareContent);
+  }
+  //菜单各项显示
+  renderMenuItem = (item) => {
+    return(
+      <Menu.Item key={"FOLDER:"+item.folder_id}>
+        <Row>
+          <Col flex="6">{item.folder_name}</Col>
+          <Col flex="2"><a onClick={this.onClickOpenFolder.bind(this,item.folder_id)}><SearchOutlined/></a></Col>
+          <Col flex="2"><Popconfirm title="确认删除此文件夹?" onConfirm={this.ondeleteFolder.bind(this,item.folder_id)}>
+              <a><DeleteOutlined/></a>
+            </Popconfirm></Col>
+          <Col flex="2"><a onClick={this.onClickEditFolder.bind(this,item.folder_id,item.folder_name)}><EditOutlined/></a></Col>
+        </Row>
+      </Menu.Item>
+    )
+  }
+
   render(){
+    //文档列表
     const columns = [{
       title:'序号',
       dataIndex:'doc_id',
@@ -211,7 +261,9 @@ class DocPage extends Component {
         <Space size="middle">
           <a onClick={this.onClickDetaildoc.bind(this,record.doc_id)}><SearchOutlined /></a>
           <a onClick={this.onClickEditdoc.bind(this,record.doc_id)}><EditOutlined /></a>
-          <a onClick={this.onClickDeletedoc.bind(this,record.doc_id)}><DeleteOutlined /></a>
+          <Popconfirm title="确认删除此文档?" onConfirm={this.onClickDeletedoc.bind(this,record.doc_id)}>
+              <a><DeleteOutlined/></a>
+          </Popconfirm>          
           <a onClick={this.onClickSharedoc.bind(this,record.doc_id)}><ShareAltOutlined /></a>
         </Space>
       ),
@@ -220,18 +272,30 @@ class DocPage extends Component {
     const {docModel,dispatch} = this.props;
     const {doclist,AlertVisible,alertmessage,
       createFolderVisible,editFolderVisible,editfoldername,editfolderid,
-      addfoldername,project_name,folderlist,remotefolderid,
-      createDocVisible,editDocVisible,
+      addfoldername,project_code,project_name,folderlist,remotefolderid,
+      createDocVisible,editDocVisible,showDocVisible,shareDocVisible,shareContent,
       adddocname,adddocremark,
       editdocname,editdocremark,
       pageNo,pageSize,totalCount} = docModel;
-   
+
     return (
-      <Layout>
-        <Sider style={{ height: '100%', background: 'white' ,minHeight: document.documentElement.clientHeight - 140}}>
+      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="space-around" align="left">
+        <Col flex={2} justify="start">
           <Button type="default" style={{width:'100%',backgroundColor:'white'}} onClick={this.onClickCreateFolder}>
             +新建文件夹
           </Button>
+          <Menu
+            style={{ width: '100%' }}
+            defaultSelectedKeys={['project-1']}
+            defaultOpenKeys={['project-1']}
+            mode={'inline'}
+            theme={'light'}
+          >
+          <SubMenu key="project-1" icon={<ProjectOutlined />} title={project_name}>
+            {folderlist.map((item=>this.renderMenuItem(item)))}
+          </SubMenu>  
+          </Menu>
+          
           <Modal
             visible={createFolderVisible}
             title="新建文件夹"
@@ -247,7 +311,7 @@ class DocPage extends Component {
             ]}
           >
             <p>新建文件夹</p>
-            <Input value={addfoldername} addonBefore="文件夹名称*" addonAfter="" onChange={this.onChangeField.bind(this,'addfoldername')}/>
+            <Input placeholder="文件夹名称（必填）" value={addfoldername} addonBefore="文件夹名称*" addonAfter="" onChange={this.onChangeField.bind(this,'addfoldername')}/>
           </Modal>
           <Modal
             visible={editFolderVisible}
@@ -285,56 +349,53 @@ class DocPage extends Component {
               closable
             />
           </Modal>
-          <p>{project_name}</p>
-          <List
-            itemLayout="horizontal"
-            dataSource={folderlist}
-
-            renderItem={item => (
-              <List.Item>
-                <List.Item.Meta
-                  title={item.folder_name}
-                  onClick={this.onClickOpenFolder.bind(this,item.folder_id)}
-                />
-                <Popconfirm title="确认删除此文件夹?" onConfirm={this.ondeleteFolder.bind(this,item.folder_id)}>
-                  <Button>删除</Button>
-                </Popconfirm>
-                <Button onClick={this.onClickEditFolder.bind(this,item.folder_id,item.folder_name)}>编辑</Button>
-              </List.Item>
-            )}
-          />,
-        </Sider>
-        <Content style={{ height: '100%', background: 'white' ,minHeight: document.documentElement.clientHeight - 140}}>
-          <Button type="default" style={{width:'100%',backgroundColor:'white'}} onClick={this.onClickCreateDoc}>
-            +新建文档
-          </Button>
-          <p>当前文件夹ID:{remotefolderid}</p>
-          <Table columns={columns} dataSource={doclist} rowKey="doc_id" pagination={{
-            current: pageNo,
-            total: totalCount,
-            pageSize: pageSize,
-            onChange: this.onChangePage
-          }}/>
-          <Modal
-            visible={createDocVisible}
-            title="新建文档"
-            onOk={this.createDocVisibleOk}
-            onCancel={this.createDocVisibleCancel}
-            footer={[
-              <Button key="submit" type="primary" onClick={this.createDocVisibleOk}>
-                确定
-              </Button>,
-              <Button key="back" onClick={this.createDocVisibleCancel}>
-                取消
-              </Button>,
-            ]}
-          >
-            <p>新建文档</p>
-            <Input value={adddocname} addonBefore="文档名称*" addonAfter="" onChange={this.onChangeField.bind(this,'adddocname')}/>
-            <Input value={adddocremark} addonBefore="文档备注*" addonAfter="" onChange={this.onChangeField.bind(this,'adddocremark')}/>
-          </Modal>
-        </Content>
-      </Layout>
+        </Col>
+        <Col flex={8}>
+          <Card>
+            <Button type="default" style={{backgroundColor:'white'}} onClick={this.onClickCreateDoc}>
+              +新建文档
+            </Button>
+            <p>当前文件夹ID:{remotefolderid}</p>
+            <Table columns={columns} dataSource={doclist} rowKey="doc_id" pagination={{
+              current: pageNo,
+              total: totalCount,
+              pageSize: pageSize,
+              onChange: this.onChangePage
+            }}/>
+            <Modal
+              visible={createDocVisible}
+              title="新建文档"
+              onOk={this.createDocVisibleOk}
+              onCancel={this.createDocVisibleCancel}
+              footer={[
+                <Button key="submit" type="primary" onClick={this.createDocVisibleOk}>
+                  确定
+                </Button>,
+                <Button key="back" onClick={this.createDocVisibleCancel}>
+                  取消
+                </Button>,
+              ]}
+            >
+              <p>新建文档</p>
+              <Input placeholder="文档描述（必填）" value={adddocname} addonBefore="文档名称*" addonAfter="" onChange={this.onChangeField.bind(this,'adddocname')}/>
+              <Input placeholder="文档备注（选填）" value={adddocremark} addonBefore="文档备注*" addonAfter="" onChange={this.onChangeField.bind(this,'adddocremark')}/>
+            </Modal>
+            <Modal
+              visible={shareDocVisible}
+              title="分享文档"
+              onCancel={this.shareDocVisibleCancel}
+              footer={[
+                <Button key="back" onClick={this.shareDocVisibleCancel}>
+                  取消
+                </Button>,
+              ]}
+            >
+              <Input value={shareContent} disabled={true}/>
+              <Button type="primary" style={{marginTop:10}} onClick={this.CopyText}>复制</Button>
+            </Modal>
+          </Card>
+        </Col>
+      </Row>
     );
   }
 

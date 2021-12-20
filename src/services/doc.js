@@ -17,3 +17,12 @@ export async function addDoc(params, options) {
       },
     })
   }
+
+export async function deleteDoc(params, options) {
+    return request(`/api/doc/delete`, {
+      method: 'POST',
+      params: {
+        ...params
+      },
+    })
+  }
