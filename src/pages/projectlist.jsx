@@ -239,7 +239,7 @@ class Collection extends Component {
                    </Card>
           </TabPane>
           <TabPane tab="成员" key="4">
-            此处为成员页面
+            此处
           </TabPane>
         </Tabs>
        
