@@ -28,6 +28,8 @@ export default {
         adddocremark:'',
         editdocname:'',
         editdocremark:'',
+        searchdocname:'',
+        searchdocuser:'',
         remotefolderid: 1,
         flag_folderchange: false,
         folderlist: [{folder_id:1,folder_name:'文件夹1'},{folder_id:2,folder_name:"文件夹2"}],
@@ -287,5 +289,26 @@ export default {
                 });
             }
         },
+        //搜索文档(从当前列表筛选，目前写在前端)
+        *searchDoc({},{put,select}){
+            const {searchdocuser,searchdocname,doclist} = yield select(state=>state.docModel);
+            console.log('test');
+            var doclist_new = [];
+            for (let i=0;i<doclist.length;i++){
+                if ((searchdocuser.toString()==doclist[i].doc_creator.toString())
+                    &&(doclist[i].doc_name.toString().indexOf(searchdocname.toString())!=-1)){
+                    doclist_new.push(doclist[i]);
+                }
+            }
+            console.log(doclist_new);
+            yield put({
+                type: 'changeState',
+                payload: {
+                    doclist: doclist_new,
+                    totalCount: doclist_new.length, 
+                    pageNo: 1, //前端页号需要加1
+                }
+            })
+        }
     },
   };

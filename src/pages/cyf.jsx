@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { SearchOutlined, EditOutlined, DeleteOutlined,ShareAltOutlined,ProjectOutlined } from '@ant-design/icons';
-import { Alert, Avatar, Icons, Button, Space, List, Result, Card, Table, Modal, Form, Input, Row, Col, Divider ,Popconfirm, Layout, Menu, PageHeader} from 'antd';
+import { Alert, Avatar, Icons, Button, Space, List, Result, Card, Table, Modal, Form, Input, Row, Col, Divider , Select, Popconfirm, Layout, Menu, PageHeader} from 'antd';
 import { history, connect } from 'umi';
 
 import PropTypes from 'prop-types';
@@ -214,6 +214,38 @@ class DocPage extends Component {
   CopyText = () =>{
     copy(this.props.docModel.shareContent);
   }
+  //选择关联用户框
+  onSelectUser = (user) =>{
+    const{dispatch} = this.props;
+    dispatch({
+      type:'docModel/changeState',
+      payload:{
+        searchdocuser:user,
+      }
+    })
+  }
+  //文档搜索
+  onClickSearch = () =>{
+    const{dispatch} = this.props;
+    dispatch({
+      type:'docModel/searchDoc',
+      payload:{
+        
+      }
+    })
+  }
+  //文档搜索重置按钮
+  resetSearch = () =>{
+    const{dispatch} = this.props;
+    console.log(this.props.docModel.searchdocuser);
+    dispatch({
+      type:'docModel/changeState',
+      payload:{
+        searchdocname:"",
+        searchdocuser:"",
+      }
+    })
+  }
   //菜单各项显示
   renderMenuItem = (item) => {
     return(
@@ -229,9 +261,15 @@ class DocPage extends Component {
       </Menu.Item>
     )
   }
+  //用户选择框选项显示
+  renderUserOption = (item) =>{
+    return(
+      <Option value={item}>{item}</Option>
+    )
+  }
 
   render(){
-    //文档列表
+    //定义文档列表
     const columns = [{
       title:'序号',
       dataIndex:'doc_id',
@@ -268,7 +306,7 @@ class DocPage extends Component {
         </Space>
       ),
     },]
-    
+    //获取state中参数
     const {docModel,dispatch} = this.props;
     const {doclist,AlertVisible,alertmessage,
       createFolderVisible,editFolderVisible,editfoldername,editfolderid,
@@ -276,7 +314,14 @@ class DocPage extends Component {
       createDocVisible,editDocVisible,showDocVisible,shareDocVisible,shareContent,
       adddocname,adddocremark,
       editdocname,editdocremark,
+      searchdocname,searchdocuser,
       pageNo,pageSize,totalCount} = docModel;
+
+    //生成选择框内用户集合
+    var userset = new Set();
+    for (let i=0;i<doclist.length;i++){
+      userset.add(doclist[i].doc_creator);
+    }
 
     return (
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="space-around" align="left">
@@ -355,8 +400,27 @@ class DocPage extends Component {
             <Button type="default" style={{backgroundColor:'white'}} onClick={this.onClickCreateDoc}>
               +新建文档
             </Button>
-            <p>当前文件夹ID:{remotefolderid}</p>
-            <Table columns={columns} dataSource={doclist} rowKey="doc_id" pagination={{
+            <Row style={{marginTop:'10px'}} gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="space-around" align="left">
+              <Col span="9">
+                <Input.Group compact>
+                  <p style={{marginTop:"5px"}}>文档名称：</p>
+                  <Input style={{width:'60%',marginLeft:'10px'}} placeholder="请输入" value={searchdocname} onChange={this.onChangeField.bind(this,'searchdocname')}/>
+                </Input.Group>
+              </Col>
+              <Col span="9">
+                <Input.Group compact>
+                  <p style={{marginTop:"5px"}}>文档创建人:</p>
+                  <Select placeholder="请选择" value={searchdocuser} style={{width: '60%',marginLeft:'10px'}} onChange={this.onSelectUser}>
+                    {userset.map((item=>this.renderUserOption(item)))}
+                  </Select>
+                </Input.Group>
+              </Col>
+              <Col span="6">
+                <Button type="primary" onClick={this.onClickSearch}>查询</Button>
+                <Button style={{marginLeft:"10px"}} type="default" onClick={this.resetSearch}>重置</Button>
+              </Col>
+            </Row>
+            <Table style={{marginTop:"10px"}} columns={columns} dataSource={doclist} rowKey="doc_id" pagination={{
               current: pageNo,
               total: totalCount,
               pageSize: pageSize,
