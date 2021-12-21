@@ -37,7 +37,7 @@ const columns = [
         if(isInGroup==1){
           return(
             <>
-            <Link to="/groupmember?groupname={text}">{text}</Link>
+            <Link to={`/groupuseredit?groupname=${text}`}>{text}</Link>
             </>
           )
         }
@@ -100,14 +100,14 @@ const columns = [
           const {isInGroup}=record;
           if(isInGroup==1){
             return(
-              <Link to={{path:"/groupmember",query:{groupname:{text}}}} > 
+              <Link to={`/groupuseredit?groupname=${text}`} > 
               <Button  icon={<EditOutlined />}/>
               </Link>
                   )
               }
           else{
             return(
-              <Link to="/groupmember?groupname={text}"> 
+              <Link to={`/groupuseredit?groupname=${text}`}> 
               <Button disabled icon={<EditOutlined />}/>
               </Link>
                   )
