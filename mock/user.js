@@ -44,7 +44,7 @@ export default {
       data: {
         name: 'Demo用户',
         avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
-        userid: '00000001',
+        id: '00000001',
         email: 'antdesign@alipay.com',
         signature: '海纳百川，有容乃大',
         title: '交互专家',
@@ -116,10 +116,10 @@ export default {
     },
   ],
   'POST /api/login/account': async (req, res) => {
-    const { password, username, type } = req.body;
+    const { password, loginName, type } = req.body;
     await waitTime(2000);
 
-    if (password === 'ant.design' && username === 'admin') {
+    if (password === 'ant.design' && loginName === 'admin') {
       res.send({
         status: 'ok',
         type,
@@ -129,7 +129,7 @@ export default {
       return;
     }
 
-    if (password === 'ant.design' && username === 'user') {
+    if (password === 'ant.design' && loginName === 'user') {
       res.send({
         status: 'ok',
         type,
@@ -224,51 +224,51 @@ export default {
         "groupuserlist": [
           {
             key: '1',
-            UserName: '张三',
-            UserID: 'zhang3_001',
-            charactor: '管理员',
+            loginName: '张三',
+            id: 'zhang3_001',
+            userRole: '管理员',
           },
           {
             key: '2',
-            UserName: '赵四',
-            UserID: 'zhao4_002',
-            charactor: '管理员',
+            loginName: '赵四',
+            id: 'zhao4_002',
+            userRole: '管理员',
           },
           {
             key: '3',
-            UserName: '王五',
-            UserID: 'wang5_003',
-            charactor: '成员',
+            loginName: '王五',
+            id: 'wang5_003',
+            userRole: '成员',
           },
           {
             key: '4',
-            UserName: '马六',
-            UserID: 'ma6_004',
-            charactor: '成员',
+            loginName: '马六',
+            id: 'ma6_004',
+            userRole: '成员',
           },
           {
             key: '5',
-            UserName: '李七',
-            UserID: 'Lee7_005',
-            charactor: '成员',
+            loginName: '李七',
+            id: 'Lee7_005',
+            userRole: '成员',
           },
           {
             key: '6',
-            UserName: '柳八',
-            UserID: 'Liu_8_006',
-            charactor: '成员',
+            loginName: '柳八',
+            id: 'Liu_8_006',
+            userRole: '成员',
           },
           {
             key: '7',
-            UserName: '九妹',
-            UserID: '9sister_007',
-            charactor: '成员',
+            loginName: '九妹',
+            id: '9sister_007',
+            userRole: '成员',
           },
           {
             key: '8',
-            UserName: '孙十',
-            UserID: 'sun10_008',
-            charactor: '成员',
+            loginName: '孙十',
+            id: 'sun10_008',
+            userRole: '成员',
           },]
       }
     })

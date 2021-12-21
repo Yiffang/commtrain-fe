@@ -11,52 +11,74 @@ const children = [];
 for (let i = 10; i < 36; i++) {
   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
-const columns = [
-    {
-      title: '姓名',
-      dataIndex: 'UserName', //待修改（从哪里找？），下同
-      key: 'UserName',
-      
-    },
-    {
-      title: '账号',
-      dataIndex: 'UserID',
-      key: 'UserID',
-    },
-    {
-      title: '角色',
-      dataIndex: 'charactor',
-      key: 'charactor',
-      render: (text,record) => {
-          return (
-            <>
-              <Select  defaultValue={text} style={{ width: 120 }} bordered={false}>
-                <Option value="管理员">管理员</Option>
-                <Option  value="成员">成员</Option>
-              </Select>
-            </>
-          );
-      }
-    },
-    {
-        title: '操作',
-        key: 'action',
-        dataIndex: 'action',
-        render: (text,record)=>{
-          const {loginName} = record;
-          return (
-            <DeleteOutlined style={{ fontSize: '16px', color: '#08c' }} onClick={()=>{console.log(loginName);removeGruopuser(loginName);}}/>
-          );
-        } 
-      },
-  ];
 
-  function handleChange(value) {
-    console.log(`selected ${value}`);
-  }
+
+  // function handleChange(value) {
+  //   console.log(`selected ${value}`);
+  // }
 
   const MemberListInGroup = (props) => {
-
+    const columns = [
+      {
+        title: '姓名',
+        dataIndex: 'loginName', 
+        key: 'loginName',
+        
+      },
+      {
+        title: '账号',
+        dataIndex: 'id',
+        key: 'id',
+      },
+      {
+        title: '角色',
+        dataIndex: 'userRole',
+        key: 'userRole',
+        render: (text,record) => {
+          const {loginName} = record;
+            return (
+              <Select 
+              defaultValue={text} 
+              style={{ width: 120 }} 
+              bordered={false}
+              onChange={handleChange}
+              >
+                <Option title='拥有所有权限' value="管理员">管理员</Option>
+                <Option title='仅拥有创建、查看群组内容权限' value="成员">成员</Option>
+              </Select>
+            );
+        }
+      },
+      {
+          title: '操作',
+          key: 'action',
+          dataIndex: 'action',
+          render: (text,record)=>{
+            const {loginName,userRole} = record;
+            if(userRole=='成员'){
+              return (
+                <DeleteOutlined style={{ fontSize: '16px', color: '#08c' }} onClick={()=>{console.log(loginName);removeGruopuser(loginName);}}/>
+              );
+            }
+            else{
+              return(
+                <></>
+              )
+            }
+            
+          } 
+        },
+    ];
+    const handleChange = (value) => {
+      console.log(value)
+      //console.log(loginName)
+      dispatch(
+        {
+          type:'groupuserModel/fetch',
+          payload:{roleType:value}
+        }
+      )
+        };
         //model相关变量
         console.log(props);
         const { groupuserModel, dispatch } = props;

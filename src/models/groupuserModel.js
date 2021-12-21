@@ -10,7 +10,7 @@ export default {
     subscriptions: {
         setup({dispatch, history}) {
             history.listen(location => {
-                if (location.pathname == '/groupuseredit') {
+                if (location.pathname == '/groupindex') {
                     dispatch({
                         type: 'fetch',
                         payload: {},
