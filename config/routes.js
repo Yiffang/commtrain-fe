@@ -28,6 +28,16 @@ export default [
     component: './Test',
   },
   {
+    path: '/GroupForm',
+    // layout: false,
+    component: './GroupForm',
+  },
+  {
+    path: '/GroupForm2',
+    // layout: false,
+    component: './GroupForm2',
+  },
+  {
     path: '/welcome',
     name: 'welcome',
     icon: 'smile',
