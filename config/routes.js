@@ -33,6 +33,16 @@ export default [
     component: './Demo',
   },
   {
+    path: '/GroupForm',
+    // layout: false,
+    component: './GroupForm',
+  },
+  {
+    path: '/GroupForm2',
+    // layout: false,
+    component: './GroupForm2',
+  },  
+  {
     path: '/group',
     // layout: false,
     component: './Group',
